@@ -1,65 +1,56 @@
-import Image from "next/image";
+import Hero from "./components/Hero";
+import "./globals.css"
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <div className="flex flex-col items-center justify-center h-full w-full max-w-[1300px] mx-auto">
+      <div className="md:px-10 px-3 w-full">
+        <Hero />
+
+      </div>
+
+      <div
+        className="fixed bottom-0 left-0 right-0 h-48 pointer-events-none"
+        style={{ overflow: "hidden", zIndex: 50, isolation: "isolate" }}
+      >
+        {[
+          { z: 1, blur: "0.0625px", start: "0%", opaque: "12.5%", end: "25%", fade: "37.5%" },
+          { z: 2, blur: "0.125px", start: "12.5%", opaque: "25%", end: "37.5%", fade: "50%" },
+          { z: 3, blur: "0.25px", start: "25%", opaque: "37.5%", end: "50%", fade: "62.5%" },
+          { z: 4, blur: "0.5px", start: "37.5%", opaque: "50%", end: "62.5%", fade: "75%" },
+          { z: 5, blur: "1px", start: "50%", opaque: "62.5%", end: "75%", fade: "87.5%" },
+          { z: 6, blur: "2px", start: "62.5%", opaque: "75%", end: "87.5%", fade: "100%" },
+          { z: 7, blur: "4px", start: "75%", opaque: "87.5%", end: "100%", fade: null },
+          { z: 8, blur: "8px", start: "87.5%", opaque: "100%", end: null, fade: null },
+        ].map(({ z, blur, start, opaque, end, fade }) => {
+          const stops = [
+            `rgba(0,0,0,0) ${start}`,
+            `rgba(0,0,0,1) ${opaque}`,
+            end && `rgba(0,0,0,1) ${end}`,
+            fade && `rgba(0,0,0,0) ${fade}`,
+          ].filter(Boolean).join(", ")
+
+          const mask = `linear-gradient(to bottom, ${stops})`
+
+          return (
+            <div
+              key={z}
+              style={{
+                opacity: 1,
+                position: "absolute",
+                inset: 0,
+                zIndex: z,
+                maskImage: mask,
+                WebkitMaskImage: mask,
+                borderRadius: 0,
+                pointerEvents: "none",
+                backdropFilter: `blur(${blur})`,
+                WebkitBackdropFilter: `blur(${blur})`,
+              }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+          )
+        })}
+      </div>
     </div>
   );
 }
