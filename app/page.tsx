@@ -5,6 +5,7 @@ import Image from "next/image";
 import Service from "./components/Service";
 import About from "./components/About";
 import Experts from "./components/Experts";
+import Testimonial from "./components/Testimonial";
 
 export default function Home() {
   return (
@@ -57,6 +58,13 @@ export default function Home() {
       <section className="w-full flex justify-center">
         <div className="w-full max-w-[1500px] sm:px-10 px-1">
           <Experts />
+        </div>
+      </section>
+
+      {/* Experts SECTION (NO BACKGROUND IMAGE HERE) */}
+      <section className="w-full flex justify-center">
+        <div className="w-full max-w-[1500px] sm:px-10 px-1">
+          <Testimonial />
         </div>
       </section>
 

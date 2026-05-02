@@ -1,7 +1,72 @@
+"use client";
+import { useState, useEffect } from "react";
+
 export default function Experts() {
+
+    const experts = [
+        {
+            image: "/worker-4.avif",
+            name: "Theresa Webb",
+            role: "Founder & Lead Therapist",
+            desc: "12 years shaping the spa's philosophy of healing through intentional, restorative touch.",
+        },
+        {
+            image: "/woker1.avif",
+            name: "Arlene McCoy",
+            role: "Lead Aesthetician",
+            desc: "Over 8 years of expertise in restorative skin care and therapeutic massage.",
+        },
+        {
+            image: "/worker3.avif",
+            name: "Guy Hawkins",
+            role: "Wellness Director",
+            desc: "Guides the full wellness experience, blending modern therapy with ancient healing traditions.",
+        },
+        {
+            image: "/worker-2.avif",
+            name: "Brooklyn Simmons",
+            role: "Fitness & Mindfulness Coach",
+            desc: "Specialises in movement therapy and breathwork to restore balance from the inside out.",
+        },
+    ];
+
+    const [current, setCurrent] = useState(0);
+    const prev = () => setCurrent((i) => (i === 0 ? experts.length - 1 : i - 1));
+    const next = () => setCurrent((i) => (i === experts.length - 1 ? 0 : i + 1));
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrent((i) => (i === experts.length - 1 ? 0 : i + 1));
+        }, 2000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const ExpertCard = ({ expert, index }: { expert: typeof experts[0], index: number }) => (
+        <div className={`h-[440px] flex flex-col gap-1 p-1 border border-gray-200 bg-[#f7f7f7] rounded-2xl w-[300px] ${index % 2 !== 0 ? "sm:flex-col-reverse" : ""
+            }`}>
+            <div className="w-full h-1/2 rounded-[inherit]">
+                <img src={expert.image} alt={expert.name} className="w-full h-full object-top rounded-[inherit] object-cover" />
+            </div>
+            <div className="h-1/2 bg-white border border-gray-200 shadow-xs p-4 w-full rounded-[inherit]"
+                style={{ boxShadow: "0 -2px 6px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.03)" }}
+            >
+                <div className="flex flex-col gap-2">
+                    <div className="text-xl hedvig tracking-wider">{expert.name}</div>
+                    <div className="text-sm text-gray-900">{expert.role}</div>
+                </div>
+                <div className="my-4 h-px w-full"
+                    style={{ background: "linear-gradient(to right, transparent, #d1d5db 30%, #d1d5db 70%, transparent)" }}
+                />
+                <div>
+                    <p className="text-sm max-w-[98%] leading-relaxed">{expert.desc}</p>
+                </div>
+            </div>
+        </div>
+    );
+
     return (
         <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10">
-            <div>
+            <div className="flex flex-col gap-20">
                 {/* Section header */}
                 <div className="flex flex-col gap-4 text-center">
                     <div className="flex items-center mx-auto gap-3">
@@ -19,11 +84,63 @@ export default function Experts() {
                         Meet The Team
                     </div>
                     <p className="text-sm md:text-base text-gray-700 leading-relaxed max-w-[95%] mx-auto sm:max-w-[500px]">
-                        Every session is crafted with skilled hands, guided by purpose fueled by a passion for helping you achieve complete relaxation and clarity.
+                        Expert hands, refined techniques, and a shared commitment to creating deeply restorative experiences for our customers.
                     </p>
                 </div>
+
+                {/* ── MOBILE: simple slide ── */}
+                <div className="sm:hidden flex flex-col items-center gap-5">
+
+                    {/* Nav row */}
+                    <div className="flex items-center justify-between w-[300px]">
+                        <div className="flex items-center gap-1.5">
+                            {experts.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setCurrent(i)}
+                                    className={`rounded-full transition-all duration-300 ${i === current ? "w-5 h-1.5 bg-gray-700" : "w-1.5 h-1.5 bg-gray-300"
+                                        }`}
+                                />
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={prev}
+                                disabled={current === 0}
+                                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 transition-colors disabled:opacity-25 disabled:cursor-not-allowed"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.75" stroke="currentColor" className="size-4">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                                </svg>
+                            </button>
+                            <button
+                                onClick={next}
+                                disabled={current === experts.length - 1}
+                                className="w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 transition-colors disabled:opacity-25 disabled:cursor-not-allowed"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.75" stroke="currentColor" className="size-4">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Active card */}
+                    {experts.map((expert, i) => (
+                        <div key={i} className={i === current ? "block" : "hidden"}>
+                            <ExpertCard expert={expert} index={i} />
+                        </div>
+                    ))}
+                </div>
+
+                {/* ── DESKTOP: wrap grid ── */}
+                <div className="hidden sm:flex w-full justify-center flex-wrap gap-2">
+                    {experts.map((expert, index) => (
+                        <ExpertCard key={index} expert={expert} index={index} />
+                    ))}
+                </div>
+
             </div>
         </div>
-
-    )
+    );
 }
