@@ -1,6 +1,6 @@
 export default function Exp() {
     return (
-        <div className="w-full py-10 grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-6">
 
             {/* Exp 1 */}
             <div className="flex items-center gap-2 sm:gap-3">

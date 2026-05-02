@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Experts() {
 
@@ -44,8 +45,15 @@ export default function Experts() {
     const ExpertCard = ({ expert, index }: { expert: typeof experts[0], index: number }) => (
         <div className={`h-[440px] flex flex-col gap-1 p-1 border border-gray-200 bg-[#f7f7f7] rounded-2xl w-[300px] ${index % 2 !== 0 ? "sm:flex-col-reverse" : ""
             }`}>
-            <div className="w-full h-1/2 rounded-[inherit]">
-                <img src={expert.image} alt={expert.name} className="w-full h-full object-top rounded-[inherit] object-cover" />
+            <div className="w-full h-1/2 rounded-[inherit] relative">
+                <Image
+                    src={expert.image}
+                    alt={expert.name}
+                    fill
+                    sizes="300px"
+                    quality={75}
+                    className="object-cover object-top rounded-[inherit]"
+                />
             </div>
             <div className="h-1/2 bg-white border border-gray-200 shadow-xs p-4 w-full rounded-[inherit]"
                 style={{ boxShadow: "0 -2px 6px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.03)" }}
@@ -66,7 +74,7 @@ export default function Experts() {
 
     return (
         <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10">
-            <div className="flex flex-col gap-20">
+            <div className="flex flex-col gap-10 sm:gap-14">
                 {/* Section header */}
                 <div className="flex flex-col gap-4 text-center">
                     <div className="flex items-center mx-auto gap-3">
@@ -125,12 +133,15 @@ export default function Experts() {
                         </div>
                     </div>
 
-                    {/* Active card */}
-                    {experts.map((expert, i) => (
-                        <div key={i} className={i === current ? "block" : "hidden"}>
-                            <ExpertCard expert={expert} index={i} />
-                        </div>
-                    ))}
+
+                    {/* Active card on top */}
+                    <div className="relative" style={{ zIndex: 10 }}>
+                        {experts.map((expert, i) => (
+                            <div key={i} className={i === current ? "block" : "hidden"}>
+                                <ExpertCard expert={expert} index={i} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {/* ── DESKTOP: wrap grid ── */}

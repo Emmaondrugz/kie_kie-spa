@@ -3,9 +3,9 @@ import Image from "next/image";
 export default function Ratings() {
     // Mock profile data
     const reviewers = [
-        { url: "/stack1.webp", color: "bg-[#fde68a]" },
-        { url: "/stack2.webp", color: "bg-[#bfdbfe]" },
-        { url: "/stack3.webp", color: "bg-[#fed7aa]" },
+        { url: "/stack1.jpg", color: "bg-[#fde68a]" },
+        { url: "/stack2.jpg", color: "bg-[#bfdbfe]" },
+        { url: "/stack3.jpg", color: "bg-[#fed7aa]" },
     ];
 
     return (

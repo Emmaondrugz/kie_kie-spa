@@ -9,7 +9,7 @@ import Testimonial from "./components/Testimonial";
 
 export default function Home() {
   return (
-    <div className="w-full mx-auto flex flex-col items-center">
+    <div className="w-full mx-auto flex flex-col items-center sm:gap-20 gap-10">
 
       {/* HERO SECTION WRAPPER */}
       <section className="relative w-full sm:pb-10 overflow-hidden h-screen sm:h-fit lg:h-screen flex justify-center">

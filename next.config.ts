@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
 
   // Image configuration
   images: {
-    qualities: [100, 50, 60, 75],
+    qualities: [100, 50, 60, 75, 80, 85],
   },
 };
 
