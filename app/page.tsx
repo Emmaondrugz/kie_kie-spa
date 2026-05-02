@@ -1,18 +1,71 @@
 import Hero from "./components/Hero";
-import "./globals.css"
+import Exp from "./components/Exp";
+import "./globals.css";
+import Image from "next/image";
+import Service from "./components/Service";
+import About from "./components/About";
+import Experts from "./components/Experts";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full max-w-[1300px] mx-auto">
-      <div className="md:px-10 px-3 w-full">
-        <Hero />
+    <div className="w-full mx-auto flex flex-col items-center">
 
-      </div>
+      {/* HERO SECTION WRAPPER */}
+      <section className="relative w-full sm:pb-10 overflow-hidden h-screen sm:h-fit lg:h-screen flex justify-center">
+
+        {/* Background only for hero */}
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/hero-3.png"
+            alt="background-image"
+            fill
+            className="object-cover"
+            priority
+          />
+
+          <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/50 to-transparent" />
+        </div>
+
+        {/* Hero content constrained */}
+        <div className="w-full max-w-[1500px] sm:px-10 px-5">
+          <Hero />
+        </div>
+      </section>
+
+      {/* EXP SECTION (NO BACKGROUND IMAGE HERE) */}
+      <section className="w-full flex justify-center">
+        <div className="w-full max-w-[1500px] sm:px-10 px-3">
+          <Exp />
+        </div>
+      </section>
+
+      {/* SERVICE SECTION (NO BACKGROUND IMAGE HERE) */}
+      <section className="w-full flex justify-center">
+        <div className="w-full max-w-[1500px] sm:px-10 px-1">
+          <Service />
+        </div>
+      </section>
+
+      {/* About SECTION (NO BACKGROUND IMAGE HERE) */}
+      <section className="w-full flex justify-center">
+        <div className="w-full max-w-[1500px] sm:px-10 px-1">
+          <About />
+        </div>
+      </section>
+
+      {/* Experts SECTION (NO BACKGROUND IMAGE HERE) */}
+      <section className="w-full flex justify-center">
+        <div className="w-full max-w-[1500px] sm:px-10 px-1">
+          <Experts />
+        </div>
+      </section>
+
 
       <div
         className="fixed bottom-0 left-0 right-0 h-48 pointer-events-none"
         style={{ overflow: "hidden", zIndex: 50, isolation: "isolate" }}
       >
+        {/* ... rest of your blur layers remain the same ... */}
         {[
           { z: 1, blur: "0.0625px", start: "0%", opaque: "12.5%", end: "25%", fade: "37.5%" },
           { z: 2, blur: "0.125px", start: "12.5%", opaque: "25%", end: "37.5%", fade: "50%" },
@@ -54,3 +107,9 @@ export default function Home() {
     </div>
   );
 }
+
+
+
+
+
+
