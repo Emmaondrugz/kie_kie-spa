@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Service() {
 
@@ -219,6 +220,10 @@ export default function Service() {
                         <CardContent service={service} />
                     </div>
                 ))}
+            </div>
+
+            <div className="w-full flex justify-center">
+                <Link href={''} className="border border-black cursor-pointer px-8 py-2.5">View Menu</Link>
             </div>
 
         </div>

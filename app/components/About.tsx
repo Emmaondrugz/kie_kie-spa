@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 export default function About() {
     return (
         <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10">
@@ -25,9 +27,12 @@ export default function About() {
 
             <div className="relative w-full h-[600px] bg-[#f7f7f7] rounded-2xl overflow-hidden">
 
-                <img
-                    src="/hero-1.jpg"
-                    alt="spa service"
+                <Image
+                    src={'/hero-1.jpg'}
+                    alt={'spa service'}
+                    fill
+                    sizes="900px"
+                    quality={85}
                     className="w-full h-full object-cover"
                 />
 

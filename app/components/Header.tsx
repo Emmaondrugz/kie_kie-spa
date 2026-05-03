@@ -1,58 +1,74 @@
 "use client"
 
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
 
     const toggleSideNav = () => {
         setIsOpen(prev => {
             const next = !prev;
-
             if (next) {
                 const scrollY = window.scrollY;
-
                 document.body.style.position = 'fixed';
                 document.body.style.top = `-${scrollY}px`;
                 document.body.style.left = '0';
                 document.body.style.right = '0';
             } else {
                 const scrollY = document.body.style.top;
-
                 document.body.style.position = '';
                 document.body.style.top = '';
                 document.body.style.left = '';
                 document.body.style.right = '';
-
                 window.scrollTo(0, parseInt(scrollY || '0') * -1);
             }
-
             return next;
         });
     };
 
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : 'auto';
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
+        return () => { document.body.style.overflow = 'auto'; };
     }, [isOpen]);
 
-    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    // Scrolls to a section by id — works whether already on home or not
+    const scrollToSection = (id: string) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
         e.preventDefault();
         setIsOpen(false);
 
-        setTimeout(() => {
-            const element = document.getElementById(targetId);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }, 300);
+        if (pathname === '/') {
+            // Already on home — just scroll
+            setTimeout(() => scrollToSection(id), isOpen ? 300 : 0);
+        } else {
+            // Navigate home first, then scroll after page loads
+            router.push(`/#${id}`);
+        }
     };
 
+    // On home page, handle hash on mount (for navigating from another page)
+    useEffect(() => {
+        if (pathname === '/' && window.location.hash) {
+            const id = window.location.hash.replace('#', '');
+            setTimeout(() => scrollToSection(id), 100);
+        }
+    }, [pathname]);
+
+    const WHATSAPP_NUMBER = "1234567890"; // replace with real number later
+    const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
+
     return (
-        <div className="w-full pt-3 flex text-white justify-between  items-center">
+        <div className="w-full pt-3 flex text-white justify-between items-center">
             {/* Logo */}
             <div className="flex items-center gap-3 relative z-100">
                 <img src="/spa_logo.png" alt="" className="sm:w-10 w-8" />
@@ -63,14 +79,14 @@ export default function Header() {
 
             {/* Desktop Nav */}
             <div className="lg:flex hidden items-center gap-7 text-sm">
-                <Link href="">About</Link>
-                <Link href="">Services</Link>
-                <Link href="">Pricing</Link>
-                <Link href="">Contact</Link>
+                <a href="#about" onClick={(e) => handleAnchorClick(e, 'about')} className="cursor-pointer">About</a>
+                <Link href="/Services">Services</Link>
+                <a href="#pricing" onClick={(e) => handleAnchorClick(e, 'pricing')} className="cursor-pointer">Pricing</a>
+                <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">Contact</a>
             </div>
 
-            {/* CTA */}
-            <Link href="" className="py-1.5 w-fit mt-5 pl-6 pr-1.5 text-sm rounded-full lg:flex hidden gap-3 items-center">
+            {/* Book Appointment button */}
+            <Link href="/Appointment" className="py-1.5 w-fit mt-5 pl-6 pr-1.5 text-sm rounded-full lg:flex hidden gap-3 items-center">
                 <div>Book Appointment</div>
                 <div className="flex items-center justify-center p-2 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#fff">
@@ -97,22 +113,21 @@ export default function Header() {
 
             {/* Mobile Nav */}
             <div
-                className={`w-full lg:hidden fixed top-20 h-[calc(100vh-80px)] z-50 bg-white transition-all duration-300 ${isOpen ? 'left-0' : '-left-full'
-                    }`}
+                className={`w-full lg:hidden fixed top-20 h-[calc(100vh-80px)] z-50 bg-white transition-all duration-300 ${isOpen ? 'left-0' : '-left-full'}`}
             >
                 <div className="p-5 flex flex-col h-full">
 
                     {/* Links */}
                     <div className="flex flex-col gap-6 text-xl">
-                        <a onClick={(e) => handleNavClick(e, 'about')} href="#about" className="text-black flex justify-between items-center">
+                        <a href="#about" onClick={(e) => handleAnchorClick(e, 'about')} className="text-black flex justify-between items-center">
                             About
                             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
                         </a>
-                        <a onClick={(e) => handleNavClick(e, 'services')} href="#services" className="text-black flex justify-between items-center">
+                        <Link href="/Services" onClick={() => setIsOpen(false)} className="text-black flex justify-between items-center">
                             Services
                             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
-                        </a>
-                        <a onClick={(e) => handleNavClick(e, 'pricing')} href="#pricing" className="text-black flex justify-between items-center">
+                        </Link>
+                        <a href="#pricing" onClick={(e) => handleAnchorClick(e, 'pricing')} className="text-black flex justify-between items-center">
                             Pricing
                             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
                         </a>
@@ -120,32 +135,26 @@ export default function Header() {
 
                     {/* CTA under links */}
                     <div className="flex flex-col max-w-[400px] w-full mx-auto mt-8 gap-4">
-                        <Link href="">
-                            <div className="text-black border-gray-200 border py-4 rounded-full text-center cursor-pointer">
-                                Contact Us
-                            </div>
-                        </Link>
-
-                        <Link href="">
+                        <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-black flex justify-between items-center">
+                            Contact
+                            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
+                        </a>
+                        <Link href="/Appointment" onClick={() => setIsOpen(false)}>
                             <div className="bg-black text-white py-4 rounded-full text-center cursor-pointer">
                                 Book Appointment
                             </div>
                         </Link>
                     </div>
 
-
                     <div className="mt-auto mb-52 pt-10">
                         <div className="max-w-[350px] w-[80%] mx-auto flex flex-col justify-center text-center gap-5">
-
                             <div className="text-gray-500 text-sm">
                                 Relax, recharge, and enjoy your premium home massage.
                             </div>
-
                             <div className="flex mx-auto text-xs gap-2 py-[5px] px-[10px] items-center text-gray-400">
                                 <p>© 2025 Kie Kie.</p>
                                 <p>All Rights Reserved</p>
                             </div>
-
                         </div>
                     </div>
                 </div>

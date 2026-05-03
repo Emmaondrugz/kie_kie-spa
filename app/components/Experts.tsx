@@ -6,10 +6,10 @@ export default function Experts() {
 
     const experts = [
         {
-            image: "/worker-4.avif",
-            name: "Theresa Webb",
+            image: "/new_kiekie.png",
+            name: "Kie Kie",
             role: "Founder & Lead Therapist",
-            desc: "12 years shaping the spa's philosophy of healing through intentional, restorative touch.",
+            desc: "7 years shaping the spa's philosophy of healing through intentional, restorative touch.",
         },
         {
             image: "/woker1.avif",
@@ -97,10 +97,10 @@ export default function Experts() {
                 </div>
 
                 {/* ── MOBILE: simple slide ── */}
-                <div className="sm:hidden flex flex-col items-center gap-5">
+                <div className="sm:hidden flex flex-col w-full items-center gap-5">
 
                     {/* Nav row */}
-                    <div className="flex items-center justify-between w-[300px]">
+                    <div className="flex items-center justify-between w-[90%]">
                         <div className="flex items-center gap-1.5">
                             {experts.map((_, i) => (
                                 <button
@@ -133,15 +133,25 @@ export default function Experts() {
                         </div>
                     </div>
 
-
-                    {/* Active card on top */}
-                    <div className="relative" style={{ zIndex: 10 }}>
-                        {experts.map((expert, i) => (
-                            <div key={i} className={i === current ? "block" : "hidden"}>
-                                <ExpertCard expert={expert} index={i} />
-                            </div>
-                        ))}
+                    {/* Slider track — clips horizontally but won't cause page overflow */}
+                    <div style={{ width: "100vw", overflowX: "clip", paddingLeft: "5vw" }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                transition: "transform 0.4s ease",
+                                transform: `translateX(calc(-${current} * (300px + 16px)))`,
+                                gap: "16px",
+                                width: "max-content",
+                            }}
+                        >
+                            {experts.map((expert, i) => (
+                                <div key={i} style={{ width: "300px", flexShrink: 0 }}>
+                                    <ExpertCard expert={expert} index={i} />
+                                </div>
+                            ))}
+                        </div>
                     </div>
+
                 </div>
 
                 {/* ── DESKTOP: wrap grid ── */}

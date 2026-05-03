@@ -6,6 +6,8 @@ import Service from "./components/Service";
 import About from "./components/About";
 import Experts from "./components/Experts";
 import Testimonial from "./components/Testimonial";
+import Cta from "./components/Cta";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -61,10 +63,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Experts SECTION (NO BACKGROUND IMAGE HERE) */}
+      {/* Testimonial SECTION (NO BACKGROUND IMAGE HERE) */}
       <section className="w-full flex justify-center">
-        <div className="w-full max-w-[1500px] sm:px-10 px-1">
+        <div className="w-full max-w-[1500px] sm:px-10 px-0">
           <Testimonial />
+        </div>
+      </section>
+
+      {/* Cta SECTION (NO BACKGROUND IMAGE HERE) */}
+      <section className="w-full flex justify-center">
+        <div className="w-full max-w-[1500px] sm:px-10 px-0">
+          <Cta />
+        </div>
+      </section>
+
+      {/* Footer SECTION (NO BACKGROUND IMAGE HERE) */}
+      <section className="w-full flex justify-center">
+        <div className="w-full max-w-[1500px] sm:px-10 px-0">
+          <Footer />
         </div>
       </section>
 
