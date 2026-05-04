@@ -30,6 +30,17 @@ export default function Header() {
         });
     };
 
+    const closeSideNav = () => {
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.overflow = 'auto';
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        setIsOpen(false);
+    };
+
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : 'auto';
         return () => { document.body.style.overflow = 'auto'; };
@@ -45,7 +56,7 @@ export default function Header() {
 
     const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
         e.preventDefault();
-        setIsOpen(false);
+        closeSideNav();
 
         if (pathname === '/') {
             // Already on home — just scroll
@@ -68,7 +79,7 @@ export default function Header() {
     const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 
     return (
-        <div className="w-full pt-3 flex text-white justify-between items-center">
+        <div className="w-full pt-3 flex text-white justify-between items-center relative z-50">
             {/* Logo */}
             <div className="flex items-center gap-3 relative z-100">
                 <img src="/spa_logo.png" alt="" className="sm:w-10 w-8" />
@@ -78,15 +89,15 @@ export default function Header() {
             </div>
 
             {/* Desktop Nav */}
-            <div className="lg:flex hidden items-center gap-7 text-sm">
-                <a href="#about" onClick={(e) => handleAnchorClick(e, 'about')} className="cursor-pointer">About</a>
+            <div className="lg:flex hidden items-center gap-7 text-sm relative z-100">
+                <a href="/" onClick={(e) => handleAnchorClick(e, 'about')} className="cursor-pointer">Home</a>
+                <Link href="/Services">Packages</Link>
                 <Link href="/Services">Services</Link>
-                <a href="#pricing" onClick={(e) => handleAnchorClick(e, 'pricing')} className="cursor-pointer">Pricing</a>
                 <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">Contact</a>
             </div>
 
             {/* Book Appointment button */}
-            <Link href="/Appointment" className="py-1.5 w-fit mt-5 pl-6 pr-1.5 text-sm rounded-full lg:flex hidden gap-3 items-center">
+            <Link href="/Appointment" className="relative z-100 py-1.5 w-fit mt-5 pl-6 pr-1.5 text-sm rounded-full lg:flex hidden gap-3 items-center">
                 <div>Book Appointment</div>
                 <div className="flex items-center justify-center p-2 rounded-full">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="#fff">
@@ -106,7 +117,7 @@ export default function Header() {
 
             {isOpen && (
                 <div
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeSideNav}
                     className="lg:hidden fixed inset-0 z-40 bg-black/30 backdrop-blur-sm transition-opacity duration-300"
                 />
             )}
@@ -119,27 +130,30 @@ export default function Header() {
 
                     {/* Links */}
                     <div className="flex flex-col gap-6 text-xl">
-                        <a href="#about" onClick={(e) => handleAnchorClick(e, 'about')} className="text-black flex justify-between items-center">
-                            About
+                        <a href="/" onClick={(e) => handleAnchorClick(e, 'about')} className="text-black flex justify-between items-center">
+                            Home
                             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
                         </a>
-                        <Link href="/Services" onClick={() => setIsOpen(false)} className="text-black flex justify-between items-center">
+                        <Link href="/Services" onClick={closeSideNav} className="text-black flex justify-between items-center">
                             Services
                             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
                         </Link>
-                        <a href="#pricing" onClick={(e) => handleAnchorClick(e, 'pricing')} className="text-black flex justify-between items-center">
-                            Pricing
+                        <Link href="/Services" onClick={closeSideNav} className="text-black flex justify-between items-center">
+                            Packages
+                            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
+                        </Link>
+                        <a href="#reviews" onClick={(e) => handleAnchorClick(e, 'reviews')} className="text-black flex justify-between items-center">
+                            Reviews
                             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
                         </a>
                     </div>
 
                     {/* CTA under links */}
                     <div className="flex flex-col max-w-[400px] w-full mx-auto mt-8 gap-4">
-                        <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-black flex justify-between items-center">
+                        <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="text-black border-2 border-gray-300 py-4 rounded-full text-center flex justify-center items-center">
                             Contact
-                            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
                         </a>
-                        <Link href="/Appointment" onClick={() => setIsOpen(false)}>
+                        <Link href="/Appointment" onClick={closeSideNav}>
                             <div className="bg-black text-white py-4 rounded-full text-center cursor-pointer">
                                 Book Appointment
                             </div>

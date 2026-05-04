@@ -12,7 +12,7 @@ export default function Service() {
             includes: [
                 {
                     time: "120 minutes",
-                    price: "From $60",
+                    price: "From $80",
                     extra: "+ Extended sessions available upon request",
                 },
             ],
@@ -24,7 +24,7 @@ export default function Service() {
             includes: [
                 {
                     time: "40  minutes",
-                    price: "From $20",
+                    price: "From $45",
                     extra: "+ Add-on treatments available",
                 },
             ],
@@ -48,7 +48,7 @@ export default function Service() {
             includes: [
                 {
                     time: "120 minutes",
-                    price: "From $60",
+                    price: "From $80",
                     extra: "+ Full immersion packages available",
                 },
             ],
@@ -81,11 +81,22 @@ export default function Service() {
 
     const CardContent = ({ service }) => (
         <>
-            <div className="w-12 h-12 flex items-center justify-center mb-5">
-                <img src={service.icon} alt="" className="w-full" />
+            <div className="flex items-start justify-between mb-5">
+                <div className="w-12 h-12 flex items-center justify-center">
+                    <img src={service.icon} alt="" className="w-full" />
+                </div>
+                {/* Price badge — top right */}
+                {service.includes.find(item => typeof item === "object" && item.price) && (
+                    <div className="text-sm font-medium text-gray-800 bg-gray-100 px-3 py-1 rounded-full">
+                        {service.includes.find(item => typeof item === "object" && item.price)?.price}
+                        <span className="text-xs text-gray-400 font-normal">/hr</span>
+                    </div>
+                )}
             </div>
+
             <div className="text-2xl hedvig leading-snug mb-3">{service.name}</div>
             <p className="text-gray-500 text-sm leading-relaxed mb-5">{service.desc}</p>
+
             <ul className="flex flex-col gap-2 mb-2 flex-1">
                 {service.includes.map((item, i) =>
                     typeof item === "string" ? (
@@ -95,11 +106,7 @@ export default function Service() {
                         </li>
                     ) : (
                         <li key={i} className="mt-1 flex flex-col gap-2 border-t border-dashed border-gray-200 pt-3">
-                            <div className="flex justify-between items-center">
-                                <span className="text-[12.5px] font-medium text-gray-700 tracking-wide">{item.time}</span>
-                                <span className="text-[12.5px] underline font-medium text-gray-700 tracking-wide">{item.price}</span>
-                            </div>
-
+                            <span className="text-[12.5px] font-medium text-gray-700 tracking-wide">{item.time}</span>
                             <span className="text-[11px] text-gray-400 italic">{item.extra}</span>
                         </li>
                     )

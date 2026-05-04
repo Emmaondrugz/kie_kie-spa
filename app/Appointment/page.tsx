@@ -1,30 +1,39 @@
 import Header from "../components/Header"
 import Image from "next/image"
+import SessionForm from "../components/Form"
+import Footer from "../components/Footer"
+import Link from "next/link"
 
 export default function Appointment() {
     return (
-        <div className="w-full mx-auto flex flex-col items-center sm:gap-20 gap-10">
-            {/* HERO SECTION WRAPPER */}
-            <section className="relative w-full sm:pb-10 overflow-hidden h-screen flex justify-center">
+        <>
+            <div className="w-full mx-auto flex items-start justify-center lg:justify-between sm:gap-20 gap-10">
+                {/* Hero content constrained */}
+                <div className="lg:w-[30%] md:h-fit h-screen w-fit bg-white pt-10 md:pt-10 flex-col gap-5 md:pl-20 flex md:justify-center p-5">
+                    {/* Heading */}
+                    {/* Top bar — back button + divider + logo */}
+                    <div className="flex items-center gap-3">
+                        <img src="form_logo.png" alt="" className="w-10 bg-black" />
+                    </div>
+                    <div className="max-w-[400px] h-auto">
+                        <SessionForm />
+                    </div>
+                </div>
 
-                {/* Background only for hero */}
-                <div className="absolute inset-0 -z-10">
+
+                <div className="lg:w-[60%] lg:block hidden h-screen">
                     <Image
                         src="/form_img.png"
                         alt="background-image"
-                        fill
-                        className="object-cover"
+                        width={500}
+                        height={500}
+                        quality={100}
+                        className="object-cover w-full h-full"
                         priority
                     />
-
-                    <div className="absolute inset-0 bg-linear-to-r from-black/90 via-black/50 to-transparent" />
                 </div>
-
-                {/* Hero content constrained */}
-                <div className="w-full max-w-[1500px] sm:px-10 px-5">
-                    Hello world
-                </div>
-            </section>
-        </div>
+            </div>
+            <Footer />
+        </>
     )
 }

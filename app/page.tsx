@@ -64,7 +64,7 @@ export default function Home() {
       </section>
 
       {/* Testimonial SECTION (NO BACKGROUND IMAGE HERE) */}
-      <section className="w-full flex justify-center">
+      <section className="w-full flex justify-center" id="reviews">
         <div className="w-full max-w-[1500px] sm:px-10 px-0">
           <Testimonial />
         </div>

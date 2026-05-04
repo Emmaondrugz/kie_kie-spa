@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
     return (
-        <footer className="bg-[#111] text-white mt-10 px-6 md:px-10 pt-16 pb-32">
+        <footer className="bg-[#111] text-white px-6 md:px-10 pt-16 pb-32">
             {/* Top border */}
             <div className="border-t border-white/15 mb-12" />
 
@@ -11,7 +11,7 @@ export default function Footer() {
                 {/* Brand + CTA */}
                 <div className="flex flex-col items-center gap-4 max-w-[420px]">
                     <div className="flex flex-col items-center gap-3">
-                        <img src="/spa_logo.png" alt="" className="w-12 h-12" />
+                        <img src="/spa_logo.png" alt="" className="w-10" />
 
                         <p className="text-lg font-normal">
                             Kie Kie — Massage & Spa
