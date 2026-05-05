@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import Image from "next/image"
 import SessionForm from "../components/Form"
 import Footer from "../components/Footer"
@@ -29,7 +29,9 @@ export default function Appointment() {
                         <img src="form_logo.png" alt="" className="w-10 bg-black" />
                     </div>
                     <div className="max-w-[400px] h-auto" data-appointment-form>
-                        <SessionForm />
+                        <Suspense fallback={null}>
+                            <SessionForm />
+                        </Suspense>
                     </div>
                 </div>
 
