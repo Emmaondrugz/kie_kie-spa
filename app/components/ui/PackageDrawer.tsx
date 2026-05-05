@@ -1,4 +1,3 @@
-// app/components/PackageDrawer.tsx
 "use client"
 
 import Image from "next/image"
@@ -34,8 +33,8 @@ export default function PackageDrawer({ pkg, onClose }: Props) {
                 { autoAlpha: 1, duration: 0.3 }
             ).fromTo(
                 drawerRef.current,
-                { xPercent: 100, autoAlpha: 0.98 },
-                { xPercent: 0, autoAlpha: 1, duration: 0.45 },
+                { autoAlpha: 0, scale: 0.97 },
+                { autoAlpha: 1, scale: 1, duration: 0.35 },
                 "-=0.2"
             ).from(
                 "[data-drawer-content]",
@@ -58,30 +57,32 @@ export default function PackageDrawer({ pkg, onClose }: Props) {
                 className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
             />
 
-            {/* Drawer */}
-            <div className="fixed z-50 bg-white overflow-y-auto
-    inset-0
-    md:inset-auto md:top-0 md:right-0 md:bottom-0 md:w-[50%]
-    flex flex-col"
+            {/* Modal */}
+            <div
                 ref={drawerRef}
+                className="fixed z-50 bg-white overflow-hidden
+                inset-0
+                md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
+                md:w-[80%] md:max-w-[900px] md:max-h-[80vh] md:rounded-2xl
+                flex flex-col md:flex-row"
             >
                 {/* Close */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center bg-white border border-gray-200 hover:bg-gray-100 transition-colors"
+                    className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center bg-white border border-gray-200 hover:bg-gray-100 transition-colors rounded-full"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M18 6 6 18M6 6l12 12" />
                     </svg>
                 </button>
 
-                {/* Image */}
-                <div className="relative w-full h-[280px] sm:h-[360px] shrink-0" data-drawer-content>
+                {/* Image — full width on mobile, left half on desktop */}
+                <div className="relative w-full h-[260px] shrink-0 md:w-[45%] md:h-auto" data-drawer-content>
                     <Image src={pkg.image} alt={pkg.name} fill className="object-cover" />
                 </div>
 
-                {/* Content */}
-                <div className="flex flex-col gap-6 p-8 flex-1">
+                {/* Content — right side on desktop */}
+                <div className="flex flex-col gap-6 p-8 flex-1 overflow-y-auto">
                     <div className="flex items-start justify-between" data-drawer-content>
                         <h2 className="hedvig text-3xl font-semibold text-black leading-snug">{pkg.name}</h2>
                         <span className="text-2xl hedvig text-black">${pkg.price}</span>

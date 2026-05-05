@@ -6,35 +6,66 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
+const experts = [
+    {
+        image: "/new_kiekie.png",
+        name: "Kie Kie",
+        role: "Founder & Lead Therapist",
+        desc: "7 years shaping the spa's philosophy of healing through intentional, restorative touch.",
+    },
+    {
+        image: "/woker1.avif",
+        name: "Arlene McCoy",
+        role: "Lead Aesthetician",
+        desc: "Over 8 years of expertise in restorative skin care and therapeutic massage.",
+    },
+    {
+        image: "/worker3.avif",
+        name: "Guy Hawkins",
+        role: "Wellness Director",
+        desc: "Guides the full wellness experience, blending modern therapy with ancient healing traditions.",
+    },
+    {
+        image: "/worker-2.avif",
+        name: "Brooklyn Simmons",
+        role: "Fitness & Mindfulness Coach",
+        desc: "Specialises in movement therapy and breathwork to restore balance from the inside out.",
+    },
+];
+
+const ExpertCard = ({ expert, index }: { expert: typeof experts[0], index: number }) => (
+    <div className={`h-[440px] flex flex-col gap-1 p-1 border border-gray-200 bg-[#f7f7f7] rounded-2xl w-[300px] ${index % 2 !== 0 ? "sm:flex-col-reverse" : ""
+        }`}>
+        <div className="w-full h-1/2 rounded-[inherit] relative">
+            <Image
+                src={expert.image}
+                alt={expert.name}
+                fill
+                sizes="300px"
+                quality={75}
+                className="object-cover object-top rounded-[inherit]"
+            />
+        </div>
+        <div className="h-1/2 bg-white border border-gray-200 shadow-xs p-4 w-full rounded-[inherit]"
+            style={{ boxShadow: "0 -2px 6px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.03)" }}
+        >
+            <div className="flex flex-col gap-2">
+                <div className="text-xl hedvig tracking-wider">{expert.name}</div>
+                <div className="text-sm text-gray-900">{expert.role}</div>
+            </div>
+            <div className="my-4 h-px w-full"
+                style={{ background: "linear-gradient(to right, transparent, #d1d5db 30%, #d1d5db 70%, transparent)" }}
+            />
+            <div>
+                <p className="text-sm max-w-[98%] leading-relaxed">{expert.desc}</p>
+            </div>
+        </div>
+    </div>
+);
+
 export default function Experts() {
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const experts = [
-        {
-            image: "/new_kiekie.png",
-            name: "Kie Kie",
-            role: "Founder & Lead Therapist",
-            desc: "7 years shaping the spa's philosophy of healing through intentional, restorative touch.",
-        },
-        {
-            image: "/woker1.avif",
-            name: "Arlene McCoy",
-            role: "Lead Aesthetician",
-            desc: "Over 8 years of expertise in restorative skin care and therapeutic massage.",
-        },
-        {
-            image: "/worker3.avif",
-            name: "Guy Hawkins",
-            role: "Wellness Director",
-            desc: "Guides the full wellness experience, blending modern therapy with ancient healing traditions.",
-        },
-        {
-            image: "/worker-2.avif",
-            name: "Brooklyn Simmons",
-            role: "Fitness & Mindfulness Coach",
-            desc: "Specialises in movement therapy and breathwork to restore balance from the inside out.",
-        },
-    ];
 
     const [current, setCurrent] = useState(0);
     const prev = () => setCurrent((i) => (i === 0 ? experts.length - 1 : i - 1));
@@ -74,35 +105,7 @@ export default function Experts() {
         });
     }, { scope: rootRef });
 
-    const ExpertCard = ({ expert, index }: { expert: typeof experts[0], index: number }) => (
-        <div className={`h-[440px] flex flex-col gap-1 p-1 border border-gray-200 bg-[#f7f7f7] rounded-2xl w-[300px] ${index % 2 !== 0 ? "sm:flex-col-reverse" : ""
-            }`}>
-            <div className="w-full h-1/2 rounded-[inherit] relative">
-                <Image
-                    src={expert.image}
-                    alt={expert.name}
-                    fill
-                    sizes="300px"
-                    quality={75}
-                    className="object-cover object-top rounded-[inherit]"
-                />
-            </div>
-            <div className="h-1/2 bg-white border border-gray-200 shadow-xs p-4 w-full rounded-[inherit]"
-                style={{ boxShadow: "0 -2px 6px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.03)" }}
-            >
-                <div className="flex flex-col gap-2">
-                    <div className="text-xl hedvig tracking-wider">{expert.name}</div>
-                    <div className="text-sm text-gray-900">{expert.role}</div>
-                </div>
-                <div className="my-4 h-px w-full"
-                    style={{ background: "linear-gradient(to right, transparent, #d1d5db 30%, #d1d5db 70%, transparent)" }}
-                />
-                <div>
-                    <p className="text-sm max-w-[98%] leading-relaxed">{expert.desc}</p>
-                </div>
-            </div>
-        </div>
-    );
+
 
     return (
         <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10" ref={rootRef}>
