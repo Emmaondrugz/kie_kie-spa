@@ -15,7 +15,7 @@ export default function Packages() {
 
     const packages = [
         {
-            image: "/product1.avif",
+            image: "/glow_serum.png",
             name: "Glow Serum",
             desc: 'Glow Serum deeply hydrates skin while enhancing natural radiance. Its lightweight formula absorbs quickly, helping your complexion appear brighter, smoother, and refreshed throughout the day.',
             benefits: [
@@ -27,7 +27,7 @@ export default function Packages() {
             price: 100
         },
         {
-            image: "/product2.avif",
+            image: "/skin_repair.png",
             name: "Skin Repair Cream",
             desc: 'Skin Repair Cream works to restore your skin barrier with every application. Enriched with nourishing actives, it soothes irritation, reduces redness, and helps damaged skin recover its natural softness.',
             benefits: [
@@ -39,7 +39,7 @@ export default function Packages() {
             price: 120
         },
         {
-            image: "/product3.avif",
+            image: "/face_oil.png",
             name: "Botanical Face Oil",
             desc: 'Botanical Face Oil blends pure plant extracts to deliver intense nourishment and a healthy, dewy finish. A few drops are all it takes to leave skin feeling supple, balanced, and visibly revitalized.',
             benefits: [
@@ -51,7 +51,7 @@ export default function Packages() {
             price: 95
         },
         {
-            image: "/product4.avif",
+            image: "/night_cream.png",
             name: "Night Renewal Cream",
             desc: 'Night Renewal Cream harnesses the power of your skin\'s overnight repair cycle. Its rich, restorative formula works while you sleep to firm, smooth, and replenish — so you wake up to visibly refreshed skin.',
             benefits: [
@@ -63,7 +63,7 @@ export default function Packages() {
             price: 135
         },
         {
-            image: "/product5.avif",
+            image: "/skin_gel.png",
             name: "Aloe Skin Gel",
             desc: 'Aloe Skin Gel provides instant soothing relief for sensitive, sun-exposed, or irritated skin. Its cooling, lightweight texture calms inflammation and locks in moisture without clogging pores.',
             benefits: [
@@ -75,7 +75,7 @@ export default function Packages() {
             price: 60
         },
         {
-            image: "/product6.avif",
+            image: "/vitamin.png",
             name: "Vitamin C Serum",
             desc: 'Vitamin C Serum delivers a concentrated dose of brightening antioxidants to even out skin tone and fade dark spots. Regular use helps protect against environmental stress while giving skin a luminous, youthful clarity.',
             benefits: [
