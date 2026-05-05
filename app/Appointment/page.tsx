@@ -26,7 +26,7 @@ export default function Appointment() {
                     {/* Heading */}
                     {/* Top bar — back button + divider + logo */}
                     <div className="flex items-center gap-3" data-appointment-logo>
-                        <img src="form_logo.png" alt="" className="w-10 bg-black" />
+                        <img src="form_logo.png" alt="" className="w-11" />
                     </div>
                     <div className="max-w-[400px] h-auto" data-appointment-form>
                         <Suspense fallback={null}>
