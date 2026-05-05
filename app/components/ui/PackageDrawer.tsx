@@ -63,7 +63,7 @@ export default function PackageDrawer({ pkg, onClose }: Props) {
                 className="fixed z-50 bg-white overflow-hidden
                 inset-0
                 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
-                md:w-[80%] md:max-w-[900px] md:max-h-[80vh] md:rounded-2xl
+                md:w-[80%] md:max-w-[900px] md:max-h-[80vh]
                 flex flex-col md:flex-row"
             >
                 {/* Close */}
