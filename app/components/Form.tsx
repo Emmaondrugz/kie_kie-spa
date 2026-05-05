@@ -108,7 +108,7 @@ export default function SessionForm() {
                 <div className="text-sm">Unwind with our exquisite range of spa services designed to pamper you from head to toe.</div>
             </div>
 
-            <form action="" className="flex flex-col gap-2 justify-between">
+            <form action="" className="flex flex-col gap-2">
                 {/* first name - last name */}
                 <div className="flex gap-2 items-center">
                     <input required type="text" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="First Name" />
