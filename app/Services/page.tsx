@@ -17,50 +17,89 @@ export default function Services() {
             image: "/new_bliss.png",
             name: "Tranquil Bliss Massages",
             desc: "Escape into relaxation as soothing techniques melt tension, leaving your body and mind in harmony.",
-            includes: [{ time: "120 minutes", price: "From $80", extra: "+ Extended sessions available upon request" }],
+            includes: [{ time: "120 minutes", price: "From $240", extra: "+ Extended sessions available upon request" }],
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
+            ],
         },
-
         {
             image: "/radiant.avif",
             name: "Revitalizing Oil Facials",
             desc: "Refresh and rejuvenate your skin with revitalizing rose oil facials for a radiant, natural glow.",
-            includes: [{ time: "60 minutes", price: "From $45", extra: "+ Premium ritual upgrades available" }],
+            includes: [{ time: "60 minutes", price: "From $185", extra: "+ Premium ritual upgrades available" }],
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
+            ],
         },
         {
             image: "/Escape.avif",
             name: "Harmonize Body & Soul",
             desc: "Restore harmony and balance to your body and soul, fostering deep inner peace and well-being.",
-            includes: [{ time: "120 minutes", price: "From $80", extra: "+ Full immersion packages available" }],
+            includes: [{ time: "120 minutes", price: "From $260", extra: "+ Full immersion packages available" }],
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
+            ],
         },
         {
             image: "/Deep.png",
             name: "Deep Tissue Massage",
             desc: "Target chronic muscle tension with firm, focused pressure that releases deep-seated knots and restores mobility.",
-            includes: [{ time: "90 minutes", price: "From $75", extra: "+ Targeted area focus available on request" }],
+            includes: [{ time: "90 minutes", price: "From $210", extra: "+ Targeted area focus available on request" }],
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
+            ],
         },
         {
             image: "/Rejuv.avif",
             name: "Hot Stone Therapy",
             desc: "Warm basalt stones glide across the body to melt tension, improve circulation, and induce profound relaxation.",
-            includes: [{ time: "75 minutes", price: "From $85", extra: "+ Full body stone ritual upgrade available" }],
+            includes: [{ time: "75 minutes", price: "From $220", extra: "+ Full body stone ritual upgrade available" }],
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
+            ],
         },
         {
             image: "/salt.avif",
             name: "Couples Massage",
             desc: "Share a moment of deep relaxation side by side, with synchronized treatments tailored to both of you.",
-            includes: [{ time: "90 minutes", price: "From $140", extra: "+ Champagne & rose petal add-on available" }],
+            includes: [{ time: "90 minutes", price: "From $300", extra: "+ Champagne & rose petal add-on available" }],
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
+            ],
         },
         {
             image: "/renewal.avif",
             name: "Aromatherapy Massage",
             desc: "A sensory journey blending essential oils with gentle massage techniques to calm the mind and nourish the skin.",
-            includes: [{ time: "60 minutes", price: "From $60", extra: "+ Custom oil blend selection available" }],
+            includes: [{ time: "60 minutes", price: "From $190", extra: "+ Custom oil blend selection available" }],
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
+            ],
         },
         {
             image: "/foot.png",
             name: "Relaxing Feet Massages",
             desc: "Soothe and refresh yourself with relaxing foot massages to ease tension and improve circulation.",
-            includes: [{ time: "40 minutes", price: "From $45", extra: "+ Add-on treatments available" }],
+            includes: [{ time: "40 minutes", price: "From $180", extra: "+ Add-on treatments available" }],
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
+            ],
         },
     ];
 
@@ -130,7 +169,7 @@ export default function Services() {
 
             {/* Services grid */}
             <div className="max-w-[1500px] w-full px-5 sm:px-10 -mt-20 sm:-mt-10" data-services-grid>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-20">
                     {services.map((service, index) => (
                         <div key={index} className="flex flex-col overflow-hidden transition-shadow duration-300" data-services-card>
                             {/* Image */}
@@ -154,24 +193,30 @@ export default function Services() {
                                 <h3 className="font-semibold text-gray-900 text-lg hedvig leading-snug">{service.name}</h3>
                                 <p className="text-gray-500 text-xs leading-relaxed">{service.desc}</p>
 
+                                {/* Extras */}
+                                {service.extras && service.extras.length > 0 && (
+                                    <div className="flex flex-col gap-1.5 mt-2">
+                                        <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Extras</span>
+                                        <ul className="flex flex-col gap-1">
+                                            {service.extras.map((extra, i) => (
+                                                <li key={i} className="flex items-center justify-between text-xs text-gray-500">
+                                                    <span>{extra.name}</span>
+                                                    <span className="font-medium text-gray-700">{extra.price}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
                                 <div className="mt-auto pt-4 border-t border-gray-100 flex flex-col gap-1 space-y-5">
                                     {service.includes.map((item, i) => (
                                         <div key={i} className="flex flex-col gap-1">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm text-gray-500 flex items-center gap-1.5">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 -960 960 960" fill="currentColor">
-                                                        <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Zm28 212-20-22v-190q0-17-11.5-28.5T448-520q-17 0-28.5 11.5T408-480v200q0 9 3 17t9 14l92 92q11 11 27.5 11t28.5-11q11-11 11-28t-11-28l-61-61Z" />
-                                                    </svg>
-                                                    {item.time}
-                                                </span>
-                                            </div>
-                                            <span className="text-xs text-gray-400">{item.extra}</span>
                                             <Link
                                                 href={{
                                                     pathname: "/Appointment",
                                                     query: { service: service.name },
                                                 }}
-                                                className="mt-2 w-full border border-black text-black text-sm text-center py-3 "
+                                                className="mt-2 w-full border border-black text-black text-sm text-center py-3"
                                             >
                                                 Book Session — {item.price}
                                             </Link>

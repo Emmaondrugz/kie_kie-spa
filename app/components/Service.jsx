@@ -13,48 +13,48 @@ export default function Service() {
             icon: "/spa-1.svg",
             name: "Tranquil Bliss Massages",
             desc: "Escape into relaxation as soothing techniques melt tension, leaving your body and mind in harmony.",
-            includes: [
-                {
-                    time: "120 minutes",
-                    price: "From $80",
-                    extra: "+ Extended sessions available upon request",
-                },
+            time: "120 minutes",
+            price: "From $240",
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
             ],
         },
         {
             icon: "/spa-2.svg",
             name: "Relaxing Feet Massages",
             desc: "Soothe and refresh yourself with relaxing foot massages to ease tension and improve circulation.",
-            includes: [
-                {
-                    time: "40  minutes",
-                    price: "From $45",
-                    extra: "+ Add-on treatments available",
-                },
+            time: "40 minutes",
+            price: "From $180",
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
             ],
         },
         {
             icon: "/spa-3.svg",
             name: "Revitalizing Oil Facials",
             desc: "Refresh and rejuvenate your skin with revitalizing rose oil facials for a radiant, natural glow.",
-            includes: [
-                {
-                    time: "60 minutes",
-                    price: "From $45",
-                    extra: "+ Premium ritual upgrades available",
-                },
+            time: "60 minutes",
+            price: "From $185",
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
             ],
         },
         {
             icon: "/spa-4.svg",
             name: "Harmonize Body & Soul",
             desc: "Restore harmony and balance to your body and soul, fostering deep inner peace and well-being.",
-            includes: [
-                {
-                    time: "120 minutes",
-                    price: "From $80",
-                    extra: "+ Full immersion packages available",
-                },
+            time: "120 minutes",
+            price: "From $260",
+            extras: [
+                { name: "Blow-Job", price: "$200" },
+                { name: "Quickie", price: "$300" },
+                { name: "Overnight", price: "$1200" },
             ],
         },
     ];
@@ -117,10 +117,9 @@ export default function Service() {
                 <div className="w-12 h-12 flex items-center justify-center">
                     <img src={service.icon} alt="" className="w-full" />
                 </div>
-                {/* Price badge — top right */}
-                {service.includes.find(item => typeof item === "object" && item.price) && (
+                {service.price && (
                     <div className="text-sm font-medium text-gray-800 bg-gray-100 px-3 py-1 rounded-full">
-                        {service.includes.find(item => typeof item === "object" && item.price)?.price}
+                        {service.price}
                         <span className="text-xs text-gray-400 font-normal">/hr</span>
                     </div>
                 )}
@@ -129,21 +128,20 @@ export default function Service() {
             <div className="text-2xl hedvig leading-snug mb-3">{service.name}</div>
             <p className="text-gray-500 text-sm leading-relaxed mb-5">{service.desc}</p>
 
-            <ul className="flex flex-col gap-2 mb-2 flex-1">
-                {service.includes.map((item, i) =>
-                    typeof item === "string" ? (
-                        <li key={i} className="flex items-center gap-2 text-[12.5px] text-gray-600">
-                            <span className="w-1.5 h-1.5 rounded-full bg-gray-400 shrink-0" />
-                            {item}
-                        </li>
-                    ) : (
-                        <li key={i} className="mt-1 flex flex-col gap-2 border-t border-dashed border-gray-200 pt-3">
-                            <span className="text-[12.5px] font-medium text-gray-700 tracking-wide">{item.time}</span>
-                            <span className="text-[11px] text-gray-400 italic">{item.extra}</span>
-                        </li>
-                    )
-                )}
-            </ul>
+            {/* Extras */}
+            {service.extras?.length > 0 && (
+                <div className="mb-5">
+                    <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">Extras</span>
+                    <ul className="mt-2 flex flex-col gap-1.5">
+                        {service.extras.map((extra, i) => (
+                            <li key={i} className="flex items-center justify-between text-xs text-gray-500">
+                                <span>{extra.name}</span>
+                                <span className="font-medium text-gray-700">{extra.price}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             <Link
                 href={{

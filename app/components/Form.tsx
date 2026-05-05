@@ -6,52 +6,68 @@ const services = [
     {
         value: "massage",
         name: "Tranquil Bliss Massages",
-        basePrice: 80,
+        basePrice: 240,
         baseDuration: 120,
     },
     {
         value: "facial",
         name: "Relaxing Feet Massages",
-        basePrice: 45,
+        basePrice: 180,
         baseDuration: 40,
     },
     {
         value: "spa",
         name: "Revitalizing Oil Facials",
-        basePrice: 45,
+        basePrice: 185,
         baseDuration: 60,
     },
     {
         value: "harmony",
         name: "Harmonize Body & Soul",
-        basePrice: 80,
+        basePrice: 260,
         baseDuration: 120,
     },
     {
         value: "deep-tissue",
         name: "Deep Tissue Massage",
-        basePrice: 75,
+        basePrice: 210,
         baseDuration: 90,
     },
     {
         value: "hot-stone",
         name: "Hot Stone Therapy",
-        basePrice: 85,
+        basePrice: 220,
         baseDuration: 75,
     },
     {
         value: "couples",
         name: "Couples Massage",
-        basePrice: 140,
+        basePrice: 300,
         baseDuration: 90,
     },
     {
         value: "aromatherapy",
         name: "Aromatherapy Massage",
-        basePrice: 60,
+        basePrice: 190,
         baseDuration: 60,
     },
 ];
+
+
+const extras = [
+    {
+        value: 'Blow-Job',
+        price: '$200'
+    },
+    {
+        value: 'Quickie',
+        price: '$300'
+    },
+    {
+        value: 'Overnight',
+        price: '$1200'
+    },
+]
 
 function calcPrice(basePrice: number, baseDuration: number, duration: number) {
     return Math.round((basePrice / baseDuration) * duration);
@@ -61,6 +77,7 @@ export default function SessionForm() {
     const searchParams = useSearchParams();
     const [duration, setDuration] = useState(60);
     const [selectedService, setSelectedService] = useState("");
+    const [selectedExtra, setSelectedExtra] = useState("");
 
     useEffect(() => {
         const serviceParam = searchParams.get("service");
@@ -77,7 +94,11 @@ export default function SessionForm() {
     }, [searchParams]);
 
     const service = services.find(s => s.value === selectedService);
-    const price = service ? calcPrice(service.basePrice, service.baseDuration, duration) : null;
+    const extraPrice = selectedExtra
+        ? parseInt(extras.find(e => e.value === selectedExtra)?.price.replace("$", "") || "0")
+        : 0;
+
+    const price = service ? calcPrice(service.basePrice, service.baseDuration, duration) + extraPrice : null;
 
     return (
         <div className="w-full flex flex-col gap-8">
@@ -87,7 +108,7 @@ export default function SessionForm() {
                 <div className="text-sm">Unwind with our exquisite range of spa services designed to pamper you from head to toe.</div>
             </div>
 
-            <form action="" className="flex flex-col gap-2">
+            <form action="" className="flex flex-col gap-2 justify-between">
                 {/* first name - last name */}
                 <div className="flex gap-2 items-center">
                     <input required type="text" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="First Name" />
@@ -116,6 +137,25 @@ export default function SessionForm() {
                         <option value="" disabled>Select a service</option>
                         {services.map(s => (
                             <option key={s.value} value={s.value}>{s.name}</option>
+                        ))}
+                    </select>
+                    <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                            <path d="M480-360 280-560h400L480-360Z" />
+                        </svg>
+                    </div>
+                </div>
+
+                {/* Extras */}
+                <div className="relative w-full">
+                    <select
+                        value={selectedExtra}
+                        onChange={e => setSelectedExtra(e.target.value)}
+                        className="border h-[50px] pl-2 pr-10 py-1 border-gray-200 focus:outline-0 font-light poppins text-sm bg-white text-gray-500 w-full appearance-none"
+                    >
+                        <option value="">No extra selected</option>
+                        {extras.map(e => (
+                            <option key={e.value} value={e.value}>{e.value} — {e.price}</option>
                         ))}
                     </select>
                     <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
