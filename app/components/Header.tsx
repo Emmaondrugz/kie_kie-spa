@@ -91,7 +91,7 @@ export default function Header() {
             {/* Desktop Nav */}
             <div className="lg:flex hidden items-center gap-7 text-sm relative z-100">
                 <a href="/" onClick={(e) => handleAnchorClick(e, 'about')} className="cursor-pointer">Home</a>
-                <Link href="/Services">Packages</Link>
+                <Link href="/Packages">Packages</Link>
                 <Link href="/Services">Services</Link>
                 <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">Contact</a>
             </div>
@@ -138,7 +138,7 @@ export default function Header() {
                             Services
                             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
                         </Link>
-                        <Link href="/Services" onClick={closeSideNav} className="text-black flex justify-between items-center">
+                        <Link href="/Packages" onClick={closeSideNav} className="text-black flex justify-between items-center">
                             Packages
                             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#999"><path d="M645.77-647.85 272.46-274.92q-8.31 8.3-20.88 8.11-12.58-.19-20.89-8.5-8.3-8.31-8.3-20.69t8.3-20.69L603.62-690H275.77q-12.75 0-21.38-8.63-8.62-8.63-8.62-21.38 0-12.76 8.62-21.37 8.63-8.62 21.38-8.62h393.84q15.37 0 25.76 10.39 10.4 10.4 10.4 25.76V-320q0 12.75-8.63 21.37-8.63 8.63-21.38 8.63-12.76 0-21.38-8.63-8.61-8.62-8.61-21.37v-327.85Z"></path></svg>
                         </Link>

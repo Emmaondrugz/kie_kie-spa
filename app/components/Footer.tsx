@@ -1,13 +1,45 @@
-import Link from "next/link";
+"use client";
+
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 export default function Footer() {
+    const rootRef = useRef<HTMLElement>(null);
+
+    useGSAP(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from("[data-footer-main]", {
+            y: 26,
+            autoAlpha: 0,
+            duration: 0.75,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: rootRef.current,
+                start: "top 86%",
+            },
+        });
+
+        gsap.from("[data-footer-bottom]", {
+            autoAlpha: 0,
+            duration: 0.45,
+            delay: 0.12,
+            scrollTrigger: {
+                trigger: rootRef.current,
+                start: "top 86%",
+            },
+        });
+    }, { scope: rootRef });
+
     return (
-        <footer className="bg-[#111] text-white px-6 md:px-10 pt-16 pb-32">
+        <footer className="bg-[#111] text-white px-6 md:px-10 pt-16 pb-32" ref={rootRef}>
             {/* Top border */}
             <div className="border-t border-white/15 mb-12" />
 
             {/* Main content */}
-            <div className="flex flex-col items-center justify-center text-center gap-10 mb-12">
+            <div className="flex flex-col items-center justify-center text-center gap-10 mb-12" data-footer-main>
                 {/* Brand + CTA */}
                 <div className="flex flex-col items-center gap-4 max-w-[420px]">
                     <div className="flex flex-col items-center gap-3">
@@ -42,7 +74,7 @@ export default function Footer() {
             </div>
 
             {/* Bottom */}
-            <div className="border-t border-white/15 py-5 flex justify-center">
+            <div className="border-t border-white/15 py-5 flex justify-center" data-footer-bottom>
                 <p className="text-xs text-white/40">
                     © All Rights Reserved 2024
                 </p>

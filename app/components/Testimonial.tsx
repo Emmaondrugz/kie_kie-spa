@@ -1,5 +1,11 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 const avatarColors = [
     { bg: "#FEF3C7", text: "#92400E" },
@@ -95,14 +101,42 @@ function ReviewCard({ review, colorIdx }: { review: (typeof reviews)[0]; colorId
 }
 
 export default function Testimonial() {
+    const rootRef = useRef<HTMLDivElement>(null);
+
+    useGSAP(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from("[data-testimonial-head]", {
+            y: 24,
+            autoAlpha: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: rootRef.current,
+                start: "top 76%",
+            },
+        });
+
+        gsap.from("[data-testimonial-row]", {
+            x: (i) => (i % 2 === 0 ? 40 : -40),
+            autoAlpha: 0,
+            duration: 0.8,
+            stagger: 0.06,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: rootRef.current,
+                start: "top 64%",
+            },
+        });
+    }, { scope: rootRef });
 
 
     return (
-        <div className="py-20 flex overflow-hidden justify-center items-center bg-[#f7f7f7] sm:rounded-2xl border-gray-300 border flex-col gap-10">
+        <div className="py-20 flex overflow-hidden justify-center items-center bg-[#f7f7f7] sm:rounded-2xl border-gray-300 border flex-col gap-10" ref={rootRef}>
 
             <div className="flex flex-col gap-10 sm:gap-14">
                 {/* Section header */}
-                <div className="flex flex-col gap-4 text-center">
+                <div className="flex flex-col gap-4 text-center" data-testimonial-head>
                     <div className="flex items-center mx-auto gap-3">
                         <div className="w-16 h-px bg-linear-to-r from-transparent to-current opacity-30" />
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 20" className="size-4 text-current shrink-0">
@@ -132,7 +166,7 @@ export default function Testimonial() {
                 <div className="sm:w-[1500px] w-[650px] overflow-hidden" style={{ position: "relative", display: "flex", flexDirection: "column", gap: "16px", overflow: 'hidden' }}>
 
                     {/* Row 1 — slides left */}
-                    <div style={{ overflow: "hidden", width: "100%" }}>
+                    <div style={{ overflow: "hidden", width: "100%" }} data-testimonial-row>
                         <div style={{ display: "flex", gap: "16px", width: "max-content", animation: "marquee-left 100s linear infinite" }}>
                             {[...reviews.slice(0, 13), ...reviews.slice(0, 13)].map((review, i) => (
                                 <ReviewCard key={`r1-${i}`} review={review} colorIdx={i} />
@@ -141,7 +175,7 @@ export default function Testimonial() {
                     </div>
 
                     {/* Row 2 — slides right */}
-                    <div style={{ overflow: "hidden", width: "100%" }}>
+                    <div style={{ overflow: "hidden", width: "100%" }} data-testimonial-row>
                         <div style={{ display: "flex", gap: "16px", width: "max-content", animation: "marquee-right 100s linear infinite" }}>
                             {[...reviews.slice(13), ...reviews.slice(13)].map((review, i) => (
                                 <ReviewCard key={`r2-${i}`} review={review} colorIdx={i + 13} />
@@ -150,7 +184,7 @@ export default function Testimonial() {
                     </div>
 
                     {/* Row 1 — slides left */}
-                    <div style={{ overflow: "hidden", width: "100%" }}>
+                    <div style={{ overflow: "hidden", width: "100%" }} data-testimonial-row>
                         <div style={{ display: "flex", gap: "16px", width: "max-content", animation: "marquee-left 130s linear infinite" }}>
                             {[...reviews.slice(13), ...reviews.slice(13)].map((review, i) => (
                                 <ReviewCard key={`r1-${i}`} review={review} colorIdx={i} />

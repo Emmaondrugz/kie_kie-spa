@@ -1,11 +1,55 @@
+"use client";
 import Image from "next/image"
+import { useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useGSAP } from "@gsap/react"
 
 export default function About() {
+    const rootRef = useRef<HTMLDivElement>(null);
+
+    useGSAP(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from("[data-about-head]", {
+            y: 22,
+            autoAlpha: 0,
+            duration: 0.65,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: rootRef.current,
+                start: "top 76%",
+            },
+        });
+
+        gsap.to("[data-about-image-wrap]", {
+            scale: 0.95,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "[data-about-image-wrap]",
+                start: "top 85%",
+                end: "bottom 20%",
+                scrub: true,
+            },
+        });
+
+        gsap.to("[data-about-image]", {
+            yPercent: 8,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "[data-about-image-wrap]",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+            },
+        });
+    }, { scope: rootRef });
+
     return (
-        <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10">
+        <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10" ref={rootRef}>
 
             {/* Section header */}
-            <div className="flex flex-col gap-4 text-center">
+            <div className="flex flex-col gap-4 text-center" data-about-head>
                 <div className="flex items-center mx-auto gap-3">
                     <div className="w-16 h-px bg-linear-to-r from-transparent to-current opacity-30" />
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 20" className="size-4 text-current shrink-0">
@@ -25,7 +69,7 @@ export default function About() {
                 </p>
             </div>
 
-            <div className="relative w-full h-[600px] bg-[#f7f7f7] rounded-2xl overflow-hidden">
+            <div className="relative w-full h-[600px] bg-[#f7f7f7] rounded-2xl overflow-hidden" data-about-image-wrap>
 
                 <Image
                     src={'/hero-1.jpg'}
@@ -33,7 +77,8 @@ export default function About() {
                     fill
                     sizes="900px"
                     quality={85}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover scale-[1.08]"
+                    data-about-image
                 />
 
                 {/* overlay for readability */}

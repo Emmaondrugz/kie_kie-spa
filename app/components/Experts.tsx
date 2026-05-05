@@ -1,8 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 export default function Experts() {
+    const rootRef = useRef<HTMLDivElement>(null);
 
     const experts = [
         {
@@ -40,7 +45,34 @@ export default function Experts() {
             setCurrent((i) => (i === experts.length - 1 ? 0 : i + 1));
         }, 2000);
         return () => clearInterval(timer);
-    }, []);
+    }, [experts.length]);
+
+    useGSAP(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from("[data-experts-head]", {
+            y: 20,
+            autoAlpha: 0,
+            duration: 0.6,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: rootRef.current,
+                start: "top 76%",
+            },
+        });
+
+        gsap.from("[data-expert-card]", {
+            y: (i) => (i % 2 === 0 ? 28 : 16),
+            autoAlpha: 0,
+            duration: 0.7,
+            stagger: 0.08,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: rootRef.current,
+                start: "top 66%",
+            },
+        });
+    }, { scope: rootRef });
 
     const ExpertCard = ({ expert, index }: { expert: typeof experts[0], index: number }) => (
         <div className={`h-[440px] flex flex-col gap-1 p-1 border border-gray-200 bg-[#f7f7f7] rounded-2xl w-[300px] ${index % 2 !== 0 ? "sm:flex-col-reverse" : ""
@@ -73,10 +105,10 @@ export default function Experts() {
     );
 
     return (
-        <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10">
+        <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10" ref={rootRef}>
             <div className="flex flex-col gap-10 sm:gap-14">
                 {/* Section header */}
-                <div className="flex flex-col gap-4 text-center">
+                <div className="flex flex-col gap-4 text-center" data-experts-head>
                     <div className="flex items-center mx-auto gap-3">
                         <div className="w-16 h-px bg-linear-to-r from-transparent to-current opacity-30" />
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 20" className="size-4 text-current shrink-0">
@@ -145,7 +177,7 @@ export default function Experts() {
                             }}
                         >
                             {experts.map((expert, i) => (
-                                <div key={i} style={{ width: "300px", flexShrink: 0 }}>
+                                <div key={i} style={{ width: "300px", flexShrink: 0 }} data-expert-card>
                                     <ExpertCard expert={expert} index={i} />
                                 </div>
                             ))}
@@ -157,7 +189,9 @@ export default function Experts() {
                 {/* ── DESKTOP: wrap grid ── */}
                 <div className="hidden sm:flex w-full justify-center flex-wrap gap-2">
                     {experts.map((expert, index) => (
-                        <ExpertCard key={index} expert={expert} index={index} />
+                        <div data-expert-card key={index}>
+                            <ExpertCard expert={expert} index={index} />
+                        </div>
                     ))}
                 </div>
 

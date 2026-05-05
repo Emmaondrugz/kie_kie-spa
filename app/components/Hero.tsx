@@ -1,10 +1,24 @@
-import Image from "next/image";
+"use client";
+import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import Header from "@/app/components/Header";
 import Rating from "@/app/components/ui/Rating"
 
 export default function Hero() {
+    const rootRef = useRef<HTMLDivElement>(null);
+
+    useGSAP(() => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        tl.from("[data-hero-badge]", { y: 10, autoAlpha: 0, duration: 0.45 })
+            .from("[data-hero-title]", { yPercent: 18, autoAlpha: 0, duration: 0.7 }, "-=0.15")
+            .from("[data-hero-copy]", { y: 16, autoAlpha: 0, duration: 0.5 }, "-=0.35")
+            .from("[data-hero-cta]", { y: 14, autoAlpha: 0, stagger: 0.09, duration: 0.45 }, "-=0.25")
+            .from("[data-hero-point]", { x: -8, autoAlpha: 0, stagger: 0.1, duration: 0.4 }, "-=0.2");
+    }, { scope: rootRef });
+
     return (
-        <div className="w-full relative text-white">
+        <div className="w-full relative text-white" ref={rootRef}>
             {/* Header - ensure it's above the gradient */}
             <div className="relative z-10">
                 <Header />
@@ -12,23 +26,25 @@ export default function Hero() {
 
             {/* Hero container */}
             <div className="flex gap-2 sm:gap-5 flex-col justify-center pt-14 items-start">
-                <Rating />
+                <div data-hero-badge>
+                    <Rating />
+                </div>
                 <div className="sm:max-w-[600px] max-w-[400px] flex flex-col gap-3">
-                    <div className="md:text-7xl sm:text-5xl text-4xl leading-[110%] hedvig">Spa-Quality Massage at Your door step.</div>
-                    <div className="font-light sm:text-base text-sm max-w-[85%] sm:max-w-[500px]">The newest way to unwind. On-demand massage therapy tailored to your schedule and space.</div>
+                    <div className="md:text-7xl sm:text-5xl text-4xl leading-[110%] hedvig" data-hero-title>Spa-Quality Massage at Your door step.</div>
+                    <div className="font-light sm:text-base text-sm max-w-[85%] sm:max-w-[500px]" data-hero-copy>The newest way to unwind. On-demand massage therapy tailored to your schedule and space.</div>
 
 
                     <div className="flex sm:gap-5 flex-col sm:flex-row items-start sm:items-center w-full">
 
                         {/* Our Services */}
-                        <div className="w-[235px] sm:w-[220px] h-[52px] mt-5">
+                        <div className="w-[235px] sm:w-[220px] h-[52px] mt-5" data-hero-cta>
                             <button className="w-full h-full border-2 border-white text-white rounded-full flex items-center justify-center text-sm sm:text-base">
                                 Our Services
                             </button>
                         </div>
 
                         {/* Book Appointment */}
-                        <div className="w-[235px] sm:w-[235px] h-[52px] mt-5">
+                        <div className="w-[235px] sm:w-[235px] h-[52px] mt-5" data-hero-cta>
                             <button className="w-full h-full bg-white text-black rounded-full flex items-center justify-between gap-3 pl-10 sm:pl-6 pr-1 text-sm sm:text-base">
                                 <span>Book Appointment</span>
                                 <span className="flex items-center justify-center p-2 rounded-full bg-[#111]">
@@ -48,7 +64,7 @@ export default function Hero() {
                     <div className="flex flex-row flex-wrap items-start gap-8">
 
                         {/* Write-up 1 */}
-                        <div className="relative">
+                        <div className="relative" data-hero-point>
                             {/* Vertical border behind */}
                             <div className="absolute -left-4 top-0 bottom-0 w-px bg-linear-to-b from-amber-400/80 via-amber-500 to-transparent" />
 
@@ -60,7 +76,7 @@ export default function Hero() {
                         </div>
 
                         {/* Write-up 2 */}
-                        <div className="relative">
+                        <div className="relative" data-hero-point>
                             {/* Vertical border behind */}
                             <div className="absolute -left-4 top-0 bottom-0 w-px bg-linear-to-b from-amber-400/80 via-amber-500 to-transparent" />
 

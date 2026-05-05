@@ -1,9 +1,16 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image"
 import Header from "../components/Header"
 import Footer from "../components/Footer";
 import Link from "next/link";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 export default function Services() {
+    const rootRef = useRef<HTMLDivElement>(null);
 
     const services = [
         {
@@ -57,8 +64,39 @@ export default function Services() {
         },
     ];
 
+    useGSAP(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from("[data-services-hero]", {
+            clipPath: "ellipse(40% 45% at 50% 0%)",
+            autoAlpha: 0,
+            duration: 0.9,
+            ease: "power2.out",
+        });
+
+        gsap.from("[data-services-hero-copy]", {
+            y: 18,
+            autoAlpha: 0,
+            duration: 0.6,
+            delay: 0.15,
+            ease: "power3.out",
+        });
+
+        gsap.from("[data-services-card]", {
+            y: 24,
+            autoAlpha: 0,
+            duration: 0.7,
+            stagger: 0.08,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: "[data-services-grid]",
+                start: "top 78%",
+            },
+        });
+    }, { scope: rootRef });
+
     return (
-        <div className="w-full flex justify-center flex-col items-center">
+        <div className="w-full flex justify-center flex-col items-center" ref={rootRef}>
             <div className="relative max-w-[1500px] w-full">
                 {/* Header sits outside the clip */}
                 <div className="absolute top-0 left-0 right-0 z-50 sm:px-10 px-5">
@@ -69,6 +107,7 @@ export default function Services() {
                 <div
                     className="relative flex py-2 h-[500px] flex-col justify-center sm:px-10 px-5 w-full mx-auto overflow-hidden"
                     style={{ clipPath: "ellipse(70% 70% at 50% 0%)" }}
+                    data-services-hero
                 >
                     <Image
                         src="/bliss.avif"
@@ -81,7 +120,7 @@ export default function Services() {
                     <div className="absolute inset-0 bg-black/60 z-10" />
 
                     {/* Hero text only */}
-                    <div className="relative z-20 flex mx-auto max-w-[500px] flex-col gap-3 text-white -mt-32 sm:-mt-24 text-center">
+                    <div className="relative z-20 flex mx-auto max-w-[500px] flex-col gap-3 text-white -mt-32 sm:-mt-24 text-center" data-services-hero-copy>
                         <div className="md:text-6xl text-4xl hedvig">Services We Offer</div>
                         <div className="md:text-base text-sm">Experience personalized care with our expert therapists, offering treatments designed to relax at the comfort of you home.</div>
                     </div>
@@ -90,10 +129,10 @@ export default function Services() {
 
 
             {/* Services grid */}
-            <div className="max-w-[1500px] w-full px-5 sm:px-10 -mt-20 sm:-mt-10">
+            <div className="max-w-[1500px] w-full px-5 sm:px-10 -mt-20 sm:-mt-10" data-services-grid>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {services.map((service, index) => (
-                        <div key={index} className="flex flex-col overflow-hidden transition-shadow duration-300">
+                        <div key={index} className="flex flex-col overflow-hidden transition-shadow duration-300" data-services-card>
                             {/* Image */}
                             <div className="relative w-full h-52 bg-gray-100">
                                 {service.image ? (

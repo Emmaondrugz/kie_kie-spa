@@ -1,8 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 export default function Service() {
+    const rootRef = useRef(null);
 
     const services = [
         {
@@ -56,6 +60,34 @@ export default function Service() {
     ];
 
     const [current, setCurrent] = useState(1);
+
+    useGSAP(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.from("[data-service-head]", {
+            y: 22,
+            autoAlpha: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: rootRef.current,
+                start: "top 74%",
+            },
+        });
+
+        gsap.from("[data-service-desktop-card]", {
+            clipPath: "inset(20% 0% 20% 0% round 16px)",
+            y: 20,
+            autoAlpha: 0,
+            duration: 0.75,
+            stagger: 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: rootRef.current,
+                start: "top 64%",
+            },
+        });
+    }, { scope: rootRef });
 
     const prev = () => { if (current > 0) setCurrent(current - 1); };
     const next = () => { if (current < services.length - 1) setCurrent(current + 1); };
@@ -120,10 +152,10 @@ export default function Service() {
     );
 
     return (
-        <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10">
+        <div className="sm:py-16 py-10 flex justify-center items-center flex-col gap-10" ref={rootRef}>
 
             {/* Section header */}
-            <div className="flex flex-col gap-4 text-center">
+            <div className="flex flex-col gap-4 text-center" data-service-head>
                 <div className="flex items-center mx-auto gap-3">
                     <div className="w-16 h-px bg-linear-to-r from-transparent to-current opacity-30" />
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 20" className="size-4 text-current shrink-0">
@@ -223,7 +255,7 @@ export default function Service() {
             {/* ── DESKTOP: grid ── */}
             <div className="hidden sm:grid md:grid-cols-2 xl:grid-cols-4 gap-5 px-4 w-full">
                 {services.map((service, index) => (
-                    <div key={index} className="flex flex-col pt-8 px-8 pb-8 bg-[#f7f7f7] border border-gray-200 rounded-2xl">
+                    <div key={index} className="flex flex-col pt-8 px-8 pb-8 bg-[#f7f7f7] border border-gray-200 rounded-2xl" data-service-desktop-card>
                         <CardContent service={service} />
                     </div>
                 ))}
