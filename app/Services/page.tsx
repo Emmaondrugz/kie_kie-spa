@@ -166,7 +166,13 @@ export default function Services() {
                                                 </span>
                                             </div>
                                             <span className="text-xs text-gray-400">{item.extra}</span>
-                                            <Link href="/Appointment" className="mt-2 w-full bg-black text-white text-sm text-center py-3 hover:bg-gray-800 transition-colors duration-200">
+                                            <Link
+                                                href={{
+                                                    pathname: "/Appointment",
+                                                    query: { service: service.name },
+                                                }}
+                                                className="mt-2 w-full border border-black text-black text-sm text-center py-3 "
+                                            >
                                                 Book Session — {item.price}
                                             </Link>
                                         </div>

@@ -37,7 +37,7 @@ export default function Cta() {
                     Book a professional in-home massage and unwind with personalized care designed to restore your body and mind.
                 </p>
                 <div className="w-full flex justify-center" data-cta-button>
-                    <Link href={''} className="border border-black cursor-pointer px-8 py-2.5">View Menu</Link>
+                    <Link href={'/Services'} className="border border-black cursor-pointer px-8 py-2.5">View Menu</Link>
                 </div>
 
                 {/* review */}

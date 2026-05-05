@@ -145,9 +145,15 @@ export default function Service() {
                 )}
             </ul>
 
-            <button className="w-full mt-5 py-2.5 rounded-xl border border-gray-400 text-sm text-gray-700 tracking-wide hover:bg-gray-50 transition-colors">
+            <Link
+                href={{
+                    pathname: "/Appointment",
+                    query: { service: service.name },
+                }}
+                className="w-full flex justify-center mt-5 py-2.5 rounded-xl border border-gray-400 text-sm text-gray-700 tracking-wide hover:bg-gray-50 transition-colors"
+            >
                 Book Service
-            </button>
+            </Link>
         </>
     );
 
@@ -262,7 +268,7 @@ export default function Service() {
             </div>
 
             <div className="w-full flex justify-center">
-                <Link href={''} className="border border-black cursor-pointer px-8 py-2.5">View Menu</Link>
+                <Link href={'/Services'} className="border border-black cursor-pointer px-8 py-2.5">View Menu</Link>
             </div>
 
         </div>

@@ -156,7 +156,7 @@ export default function Testimonial() {
                     </p>
 
                     <div className="w-full flex justify-center">
-                        <Link href={''} className="border border-black cursor-pointer px-8 py-2.5">Book Appointment</Link>
+                        <Link href={'/Appointment'} className="border border-black cursor-pointer px-8 py-2.5">Book Appointment</Link>
                     </div>
                 </div>
 

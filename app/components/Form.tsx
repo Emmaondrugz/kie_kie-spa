@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 const services = [
     {
@@ -26,6 +27,30 @@ const services = [
         basePrice: 80,
         baseDuration: 120,
     },
+    {
+        value: "deep-tissue",
+        name: "Deep Tissue Massage",
+        basePrice: 75,
+        baseDuration: 90,
+    },
+    {
+        value: "hot-stone",
+        name: "Hot Stone Therapy",
+        basePrice: 85,
+        baseDuration: 75,
+    },
+    {
+        value: "couples",
+        name: "Couples Massage",
+        basePrice: 140,
+        baseDuration: 90,
+    },
+    {
+        value: "aromatherapy",
+        name: "Aromatherapy Massage",
+        basePrice: 60,
+        baseDuration: 60,
+    },
 ];
 
 function calcPrice(basePrice: number, baseDuration: number, duration: number) {
@@ -33,8 +58,23 @@ function calcPrice(basePrice: number, baseDuration: number, duration: number) {
 }
 
 export default function SessionForm() {
+    const searchParams = useSearchParams();
     const [duration, setDuration] = useState(60);
     const [selectedService, setSelectedService] = useState("");
+
+    useEffect(() => {
+        const serviceParam = searchParams.get("service");
+        if (!serviceParam) return;
+
+        const normalized = decodeURIComponent(serviceParam).trim().toLowerCase();
+        const matched = services.find((s) =>
+            s.value.toLowerCase() === normalized || s.name.toLowerCase() === normalized
+        );
+
+        if (matched) {
+            setSelectedService(matched.value);
+        }
+    }, [searchParams]);
 
     const service = services.find(s => s.value === selectedService);
     const price = service ? calcPrice(service.basePrice, service.baseDuration, duration) : null;

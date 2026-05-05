@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Link from "next/link";
 
 export default function Footer() {
     const rootRef = useRef<HTMLElement>(null);
@@ -33,6 +34,10 @@ export default function Footer() {
         });
     }, { scope: rootRef });
 
+    const WHATSAPP_NUMBER = "1234567890"; // replace with real number later
+    const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
+
+
     return (
         <footer className="bg-[#111] text-white px-6 md:px-10 pt-16 pb-32" ref={rootRef}>
             {/* Top border */}
@@ -56,15 +61,15 @@ export default function Footer() {
 
                     {/* CTA buttons */}
                     <div className="flex gap-3 mt-2 flex-wrap justify-center">
-                        <a
-                            href="#"
+                        <Link
+                            href={'/Services'}
                             className="bg-white text-black px-7 py-2.5 text-sm md:text-base font-medium whitespace-nowrap"
                         >
                             Start now
-                        </a>
+                        </Link>
 
                         <a
-                            href="#"
+                            href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer"
                             className="border border-white text-white px-7 py-2.5 text-sm md:text-base font-medium whitespace-nowrap"
                         >
                             Contact
