@@ -90,15 +90,23 @@ export default function SessionForm() {
 
         if (matched) {
             setSelectedService(matched.value);
+            setDuration(matched.baseDuration);
         }
     }, [searchParams]);
+
+    useEffect(() => {
+        if (!selectedService) return;
+        const matched = services.find(s => s.value === selectedService);
+        if (matched) setDuration(matched.baseDuration);
+    }, [selectedService]);
 
     const service = services.find(s => s.value === selectedService);
     const extraPrice = selectedExtra
         ? parseInt(extras.find(e => e.value === selectedExtra)?.price.replace("$", "") || "0")
         : 0;
 
-    const price = service ? calcPrice(service.basePrice, service.baseDuration, duration) + extraPrice : null;
+    const sessionPrice = service ? calcPrice(service.basePrice, service.baseDuration, duration) : null;
+    const price = sessionPrice !== null ? sessionPrice + extraPrice : null;
 
     return (
         <div className="w-full flex flex-col gap-8">
@@ -190,7 +198,10 @@ export default function SessionForm() {
     )
 }
 
-function DurationInput({ duration, setDuration }: { duration: number; setDuration: (fn: (d: number) => number) => void }) {
+function DurationInput({ duration, setDuration }: {
+    duration: number;
+    setDuration: (val: number | ((d: number) => number)) => void
+}) {
     const step = 30;
     const min = 30;
     const max = 240;
