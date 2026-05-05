@@ -22,7 +22,7 @@ export default function Appointment() {
         <>
             <div className="w-full mx-auto flex items-start h-fit justify-center lg:justify-between sm:gap-20 gap-10" ref={rootRef}>
                 {/* Hero content constrained */}
-                <div className="lg:w-[30%] md:h-fit h-screen w-fit bg-white pt-10 md:pt-10 flex-col gap-5 md:pl-20 flex md:justify-center p-5" data-appointment-panel>
+                <div className="lg:w-[30%] md:h-fit sm:pb-0 mb-20 h-screen w-fit bg-white pt-10 md:pt-10 flex-col gap-5 md:pl-20 flex md:justify-center p-5" data-appointment-panel>
                     {/* Heading */}
                     {/* Top bar — back button + divider + logo */}
                     <div className="flex items-center gap-3" data-appointment-logo>
