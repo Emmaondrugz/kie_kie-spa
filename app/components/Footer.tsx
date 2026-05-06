@@ -34,7 +34,7 @@ export default function Footer() {
         });
     }, { scope: rootRef });
 
-    const WHATSAPP_NUMBER = "1234567890"; // replace with real number later
+    const WHATSAPP_NUMBER = "+19494702925";
     const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 
