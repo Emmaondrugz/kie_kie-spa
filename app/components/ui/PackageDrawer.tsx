@@ -13,12 +13,14 @@ type Package = {
     price: number
 }
 
+
 type Props = {
     pkg: Package | null
     onClose: () => void
+    onBuyNow: (pkg: { name: string; price: number }) => void  // add this
 }
 
-export default function PackageDrawer({ pkg, onClose }: Props) {
+export default function PackageDrawer({ pkg, onClose, onBuyNow }: Props) {
     const overlayRef = useRef<HTMLDivElement>(null);
     const drawerRef = useRef<HTMLDivElement>(null);
 
@@ -105,12 +107,12 @@ export default function PackageDrawer({ pkg, onClose }: Props) {
                     </div>
 
                     <div className="mt-auto pt-6 border-t border-gray-100" data-drawer-content>
-                        <Link
-                            href="/Appointment"
+                        <button
+                            onClick={() => onBuyNow({ name: pkg.name, price: pkg.price })}
                             className="block w-full bg-black text-white text-center py-4 text-sm hover:bg-gray-800 transition-colors duration-200"
                         >
                             Buy Now — ${pkg.price}
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>

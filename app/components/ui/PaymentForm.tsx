@@ -2,40 +2,41 @@
 
 import { useState } from "react";
 import type { SessionData } from "@/app/Appointment/page";
+import type { PackagePaymentData } from "@/app/Packages/page";
 
 const BTC_ADDRESS = "bc1q8zwk444twd3wwcjadzfrnc3xnve4fxna4x5zhc";
 const WHATSAPP_NUMBER = "+12562476016";
 const USD_TO_BTC = 0.000016;
 
-type Props = {
+type SessionProps = {
+    mode?: "session";
     sessionData: SessionData;
+    packageData?: never;
     onClose: () => void;
 };
 
-export default function PaymentForm({ sessionData, onClose }: Props) {
+type PackageProps = {
+    mode: "package";
+    packageData: PackagePaymentData;
+    sessionData?: never;
+    onClose: () => void;
+};
+
+type Props = SessionProps | PackageProps;
+
+export default function PaymentForm({ mode = "session", sessionData, packageData, onClose }: Props) {
     const [copied, setCopied] = useState(false);
     const [qrLoaded, setQrLoaded] = useState(false);
 
-    const btcAmount = (sessionData.price * USD_TO_BTC).toFixed(6);
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=bitcoin:${BTC_ADDRESS}?amount=${btcAmount}&label=Spa+Session&size=180x180`;
+    // Unified price + label regardless of mode
+    const price = mode === "package" ? packageData!.price : sessionData!.price;
+    const label = mode === "package" ? packageData!.name : sessionData!.service;
 
-    const fallbackMessage = encodeURIComponent(
-        `Hi! 👋 I'd like to book a session but I'm having trouble with the crypto payment and need some help.\n\n` +
-        `━━━━━━━━━━━━━━━━━━━\n` +
-        `📋 BOOKING DETAILS\n` +
-        `━━━━━━━━━━━━━━━━━━━\n` +
-        `👤 Name: ${sessionData.firstName} ${sessionData.lastName}\n` +
-        `📧 Email: ${sessionData.email}\n` +
-        `📱 Phone: ${sessionData.phone}\n` +
-        `📍 Address: ${sessionData.address}\n\n` +
-        `💆 Service: ${sessionData.service}\n` +
-        `⏱ Duration: ${sessionData.duration} min\n\n` +
-        `${sessionData.extra ? `✨ Extra: ${sessionData.extra}\n` : ``}` +
-        `💰 Total Due: $${sessionData.price} USD\n\n` +
-        `${sessionData.notes ? `📝 Notes: ${sessionData.notes}\n\n` : ``}` +
-        `Could you assist me with an alternative payment method? Thank you! 🙏`
-    );
-    const confirmMessage = encodeURIComponent(
+    const btcAmount = (price * USD_TO_BTC).toFixed(6);
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=bitcoin:${BTC_ADDRESS}?amount=${btcAmount}&label=Spa+Purchase&size=180x180`;
+
+    // --- Session messages (unchanged) ---
+    const sessionConfirmMessage = sessionData ? encodeURIComponent(
         `Hi! 👋 I've just sent a Bitcoin payment and wanted to confirm my booking.\n\n` +
         `━━━━━━━━━━━━━━━━━━━\n` +
         `📋 BOOKING DETAILS\n` +
@@ -45,17 +46,57 @@ export default function PaymentForm({ sessionData, onClose }: Props) {
         `📱 Phone: ${sessionData.phone}\n` +
         `📍 Address: ${sessionData.address}\n\n` +
         `💆 Service: ${sessionData.service}\n` +
-        `⏱ Duration: ${sessionData.duration} min\n\n` +
         `${sessionData.extra ? `✨ Extra: ${sessionData.extra}\n` : ``}` +
+        `⏱ Duration: ${sessionData.duration} min\n\n` +
         `💰 Amount Paid: $${sessionData.price} USD\n` +
         `₿ BTC Sent: ${btcAmount} BTC\n` +
         `🏦 To Wallet: ${BTC_ADDRESS}\n\n` +
         `${sessionData.notes ? `📝 Notes: ${sessionData.notes}\n\n` : ``}` +
         `Please confirm receipt and send over the booking confirmation. Thank you! 🙏`
-    );
+    ) : "";
 
-    const waFallbackLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${fallbackMessage}`;
-    const waConfirmLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${confirmMessage}`;
+    const sessionFallbackMessage = sessionData ? encodeURIComponent(
+        `Hi! 👋 I'd like to book a session but I'm having trouble with the crypto payment and need some help.\n\n` +
+        `━━━━━━━━━━━━━━━━━━━\n` +
+        `📋 BOOKING DETAILS\n` +
+        `━━━━━━━━━━━━━━━━━━━\n` +
+        `👤 Name: ${sessionData.firstName} ${sessionData.lastName}\n` +
+        `📧 Email: ${sessionData.email}\n` +
+        `📱 Phone: ${sessionData.phone}\n` +
+        `📍 Address: ${sessionData.address}\n\n` +
+        `💆 Service: ${sessionData.service}\n` +
+        `${sessionData.extra ? `✨ Extra: ${sessionData.extra}\n` : ``}` +
+        `⏱ Duration: ${sessionData.duration} min\n\n` +
+        `💰 Total Due: $${sessionData.price} USD\n\n` +
+        `${sessionData.notes ? `📝 Notes: ${sessionData.notes}\n\n` : ``}` +
+        `Could you assist me with an alternative payment method? Thank you! 🙏`
+    ) : "";
+
+    // --- Package messages ---
+    const packageConfirmMessage = packageData ? encodeURIComponent(
+        `Hi! 👋 I've just sent a Bitcoin payment for a product order and wanted to confirm.\n\n` +
+        `━━━━━━━━━━━━━━━━━━━\n` +
+        `🛍️ ORDER DETAILS\n` +
+        `━━━━━━━━━━━━━━━━━━━\n` +
+        `📦 Product: ${packageData.name}\n\n` +
+        `💰 Amount Paid: $${packageData.price} USD\n` +
+        `₿ BTC Sent: ${btcAmount} BTC\n` +
+        `🏦 To Wallet: ${BTC_ADDRESS}\n\n` +
+        `Please confirm receipt and let me know when my order will be processed. Thank you! 🙏`
+    ) : "";
+
+    const packageFallbackMessage = packageData ? encodeURIComponent(
+        `Hi! 👋 I'd like to purchase a product but I'm having trouble with the crypto payment and need some help.\n\n` +
+        `━━━━━━━━━━━━━━━━━━━\n` +
+        `🛍️ ORDER DETAILS\n` +
+        `━━━━━━━━━━━━━━━━━━━\n` +
+        `📦 Product: ${packageData.name}\n\n` +
+        `💰 Total Due: $${packageData.price} USD\n\n` +
+        `Could you assist me with an alternative payment method? Thank you! 🙏`
+    ) : "";
+
+    const waConfirmLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${mode === "package" ? packageConfirmMessage : sessionConfirmMessage}`;
+    const waFallbackLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${mode === "package" ? packageFallbackMessage : sessionFallbackMessage}`;
 
     const handleCopy = () => {
         navigator.clipboard.writeText(BTC_ADDRESS);
@@ -68,7 +109,7 @@ export default function PaymentForm({ sessionData, onClose }: Props) {
             <div className="bg-white w-full max-w-md relative overflow-y-auto max-h-[90vh] flex flex-col gap-6 px-8 py-6">
 
                 {/* Close */}
-                <button onClick={onClose} className="absolute cursor-pointer top-3 bg-[#f7f7f7] p-2 right-4 text-gray-400 hover:text-black transition-colors">
+                <button onClick={onClose} className="absolute top-3 bg-[#f7f7f7] p-2 right-4 text-gray-400 hover:text-black transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="currentColor">
                         <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
                     </svg>
@@ -76,34 +117,40 @@ export default function PaymentForm({ sessionData, onClose }: Props) {
 
                 {/* Header */}
                 <div className="flex flex-col gap-1">
-                    <h2 className="text-2xl hedvig">Complete Payment</h2>
+                    <h2 className="text-2xl hedvig">
+                        {mode === "package" ? "Complete Purchase" : "Complete Payment"}
+                    </h2>
                     <p className="text-sm text-gray-500 poppins font-light">
-                        Send exactly <span className="text-black font-medium">{btcAmount} BTC</span> to confirm your session.
+                        Send exactly <span className="text-black font-medium">{btcAmount} BTC</span> to confirm your{" "}
+                        {mode === "package" ? "order" : "session"}.
                     </p>
                 </div>
 
-                {/* Session summary */}
+                {/* Summary */}
                 <div className="bg-[#f7f7f7] p-4 flex flex-col gap-1 text-sm poppins font-light">
-                    <div className="flex justify-between"><span className="text-gray-500">Service</span><span>{sessionData.service}</span></div>
-                    {sessionData.extra && <div className="flex justify-between"><span className="text-gray-500">Extra</span><span>{sessionData.extra}</span></div>}
-                    <div className="flex justify-between"><span className="text-gray-500">Duration</span><span>{sessionData.duration} min</span></div>
-                    <div className="flex justify-between border-t border-gray-200 pt-2 mt-1 font-medium"><span>Total</span><span>${sessionData.price}</span></div>
+                    {mode === "package" ? (
+                        <>
+                            <div className="flex justify-between"><span className="text-gray-500">Product</span><span>{packageData!.name}</span></div>
+                            <div className="flex justify-between border-t border-gray-200 pt-2 mt-1 font-medium"><span>Total</span><span>${packageData!.price}</span></div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="flex justify-between"><span className="text-gray-500">Service</span><span>{sessionData!.service}</span></div>
+                            {sessionData!.extra && <div className="flex justify-between"><span className="text-gray-500">Extra</span><span>{sessionData!.extra}</span></div>}
+                            <div className="flex justify-between"><span className="text-gray-500">Duration</span><span>{sessionData!.duration} min</span></div>
+                            <div className="flex justify-between border-t border-gray-200 pt-2 mt-1 font-medium"><span>Total</span><span>${sessionData!.price}</span></div>
+                        </>
+                    )}
                 </div>
 
                 {/* QR + address */}
                 <div className="flex flex-col items-center gap-3">
-
-                    {/* Skeleton shown until QR loads */}
                     <div className="relative w-[180px] h-[180px]">
                         {!qrLoaded && (
                             <div className="absolute inset-0 bg-gray-100 animate-pulse flex flex-col items-center justify-center gap-2">
-                                {/* Fake QR pattern */}
                                 <div className="grid grid-cols-5 gap-1 opacity-20">
                                     {Array.from({ length: 25 }).map((_, i) => (
-                                        <div
-                                            key={i}
-                                            className={`w-6 h-6 ${Math.random() > 0.4 ? "bg-gray-400" : "bg-transparent"}`}
-                                        />
+                                        <div key={i} className={`w-6 h-6 ${Math.random() > 0.4 ? "bg-gray-400" : "bg-transparent"}`} />
                                     ))}
                                 </div>
                             </div>
@@ -121,7 +168,7 @@ export default function PaymentForm({ sessionData, onClose }: Props) {
                         <button
                             type="button"
                             onClick={handleCopy}
-                            className={`text-xs cursor-pointer poppins shrink-0 flex items-center gap-1 transition-colors duration-200 ${copied ? "text-green-500" : "text-black underline"}`}
+                            className={`text-xs poppins shrink-0 flex items-center gap-1 transition-colors duration-200 ${copied ? "text-green-500" : "text-black underline"}`}
                         >
                             {copied ? (
                                 <>
@@ -167,7 +214,7 @@ export default function PaymentForm({ sessionData, onClose }: Props) {
                     </svg>
                     <span>Text Us on WhatsApp</span>
                 </a>
-            </div>
+            </div >
         </div >
     );
 }

@@ -8,10 +8,37 @@ import PackageDrawer from "../components/ui/PackageDrawer";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import PaymentForm from '../components/ui/PaymentForm';
+
+export type PackagePaymentData = {
+    name: string;
+    price: number;
+};
 
 export default function Packages() {
     const rootRef = useRef<HTMLDivElement>(null);
-    const [selectedPackage, setSelectedPackage] = useState<typeof packages[0] | null>(null)
+    const [selectedPackage, setSelectedPackage] = useState<typeof packages[0] | null>(null);
+    const [paymentPackage, setPaymentPackage] = useState<PackagePaymentData | null>(null);
+
+    const openPayment = (pkg: PackagePaymentData) => {
+        const scrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        setSelectedPackage(null); // close drawer
+        setPaymentPackage(pkg);   // open payment
+    };
+
+    const closePayment = () => {
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        setPaymentPackage(null);
+    };
 
     const packages = [
         {
@@ -195,7 +222,19 @@ export default function Packages() {
             <div className="w-full mt-32 sm:mt-52">
                 <Footer />
             </div>
-            <PackageDrawer pkg={selectedPackage} onClose={() => setSelectedPackage(null)} />
+            {paymentPackage && (
+                <PaymentForm
+                    mode="package"
+                    packageData={paymentPackage}
+                    onClose={closePayment}
+                />
+            )}
+
+            <PackageDrawer
+                pkg={selectedPackage}
+                onClose={() => setSelectedPackage(null)}
+                onBuyNow={openPayment}
+            />
         </div>
     )
 }
