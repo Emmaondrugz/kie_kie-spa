@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import type { SessionData } from "@/app/Appointment/page";
 
 const services = [
     {
@@ -73,11 +74,19 @@ function calcPrice(basePrice: number, baseDuration: number, duration: number) {
     return Math.round((basePrice / baseDuration) * duration);
 }
 
-export default function SessionForm() {
+export default function SessionForm({ onSubmit }: { onSubmit: (data: SessionData) => void }) {
     const searchParams = useSearchParams();
     const [duration, setDuration] = useState(60);
     const [selectedService, setSelectedService] = useState("");
     const [selectedExtra, setSelectedExtra] = useState("");
+
+    // field state
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
+    const [notes, setNotes] = useState("");
 
     useEffect(() => {
         const serviceParam = searchParams.get("service");
@@ -108,6 +117,21 @@ export default function SessionForm() {
     const sessionPrice = service ? calcPrice(service.basePrice, service.baseDuration, duration) : null;
     const price = sessionPrice !== null ? sessionPrice + extraPrice : null;
 
+
+    const [submitting, setSubmitting] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!service || price === null) return;
+        setSubmitting(true);
+
+        // Small delay so spinner is visible before modal opens
+        setTimeout(() => {
+            onSubmit({ firstName, lastName, email, phone, address, service: service.name, extra: selectedExtra, duration, notes, price });
+            setSubmitting(false);
+        }, 600);
+    };
+
     return (
         <div className="w-full flex flex-col gap-8">
             {/* Form Header */}
@@ -116,80 +140,66 @@ export default function SessionForm() {
                 <div className="text-sm">Unwind with our exquisite range of spa services designed to pamper you from head to toe.</div>
             </div>
 
-            <form action="" className="flex flex-col gap-2">
-                {/* first name - last name */}
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div className="flex gap-2 items-center">
-                    <input required type="text" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="First Name" />
-                    <input required type="text" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="Last Name" />
+                    <input required value={firstName} onChange={e => setFirstName(e.target.value)} type="text" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="First Name" />
+                    <input required value={lastName} onChange={e => setLastName(e.target.value)} type="text" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="Last Name" />
+                </div>
+                <div className="flex gap-2 items-center">
+                    <input required value={email} onChange={e => setEmail(e.target.value)} type="email" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="Email" />
+                    <input required value={phone} onChange={e => setPhone(e.target.value)} type="number" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="Phone Number" />
+                </div>
+                <div className="flex gap-2 items-center">
+                    <input required value={address} onChange={e => setAddress(e.target.value)} type="text" className="border h-[50px] w-full px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="Current Address" />
                 </div>
 
-                {/* email - number */}
-                <div className="flex gap-2 items-center">
-                    <input required type="email" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="Email" />
-                    <input required type="number" className="border h-[50px] w-1/2 px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="Phone Number" />
-                </div>
-
-                {/* Address */}
-                <div className="flex gap-2 items-center">
-                    <input required type="text" className="border h-[50px] w-full px-2 py-1 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm" placeholder="Current Address" />
-                </div>
-
-                {/* Services */}
+                {/* Services select — unchanged markup */}
                 <div className="relative w-full">
-                    <select
-                        required
-                        value={selectedService}
-                        onChange={e => setSelectedService(e.target.value)}
-                        className="border h-[50px] pl-2 pr-10 py-1 border-gray-200 focus:outline-0 font-light poppins text-sm bg-white text-gray-500 w-full appearance-none"
-                    >
+                    <select required value={selectedService} onChange={e => setSelectedService(e.target.value)} className="border h-[50px] pl-2 pr-10 py-1 border-gray-200 focus:outline-0 font-light poppins text-sm bg-white text-gray-500 w-full appearance-none">
                         <option value="" disabled>Select a service</option>
-                        {services.map(s => (
-                            <option key={s.value} value={s.value}>{s.name}</option>
-                        ))}
+                        {services.map(s => <option key={s.value} value={s.value}>{s.name}</option>)}
                     </select>
                     <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M480-360 280-560h400L480-360Z" />
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M480-360 280-560h400L480-360Z" /></svg>
                     </div>
                 </div>
 
-                {/* Extras */}
+                {/* Extras select — unchanged markup */}
                 <div className="relative w-full">
-                    <select
-                        value={selectedExtra}
-                        onChange={e => setSelectedExtra(e.target.value)}
-                        className="border h-[50px] pl-2 pr-10 py-1 border-gray-200 focus:outline-0 font-light poppins text-sm bg-white text-gray-500 w-full appearance-none"
-                    >
+                    <select value={selectedExtra} onChange={e => setSelectedExtra(e.target.value)} className="border h-[50px] pl-2 pr-10 py-1 border-gray-200 focus:outline-0 font-light poppins text-sm bg-white text-gray-500 w-full appearance-none">
                         <option value="">No extra selected</option>
-                        {extras.map(e => (
-                            <option key={e.value} value={e.value}>{e.value} — {e.price}</option>
-                        ))}
+                        {extras.map(e => <option key={e.value} value={e.value}>{e.value} — {e.price}</option>)}
                     </select>
                     <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M480-360 280-560h400L480-360Z" />
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M480-360 280-560h400L480-360Z" /></svg>
                     </div>
                 </div>
 
-                {/* Duration */}
                 <DurationInput duration={duration} setDuration={setDuration} />
 
-                {/* Message */}
                 <div className="flex gap-2 items-center">
-                    <textarea
-                        placeholder="Additional notes or requests..."
-                        className="border w-full px-2 py-3 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm resize-none h-[100px]"
-                    />
+                    <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Additional notes or requests..." className="border w-full px-2 py-3 border-gray-200 focus:outline-0 font-light poppins placeholder:text-sm resize-none h-[100px]" />
                 </div>
 
-                <button className="w-full bg-black py-2.5 text-white mt-5 mb-10 cursor-pointer flex items-center justify-center gap-2">
-                    <span>Book Session</span>
-                    {price !== null && (
+                <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full bg-black py-2.5 text-white mt-5 mb-10 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-70"
+                >
+                    {submitting ? (
+                        <svg className="animate-spin" xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="white" strokeWidth="3" />
+                            <path className="opacity-75" fill="white" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                        </svg>
+                    ) : (
                         <>
-                            <span className="text-gray-400">—</span>
-                            <span>${price}</span>
+                            <span>Book Session</span>
+                            {price !== null && (
+                                <>
+                                    <span className="text-gray-400">—</span>
+                                    <span>${price}</span>
+                                </>
+                            )}
                         </>
                     )}
                 </button>

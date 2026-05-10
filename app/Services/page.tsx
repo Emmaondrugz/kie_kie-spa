@@ -152,6 +152,7 @@ export default function Services() {
                         src="/bliss.avif"
                         alt="background-image"
                         fill
+                        sizes="1000px"
                         className="object-cover"
                         priority
                     />
@@ -175,7 +176,7 @@ export default function Services() {
                             {/* Image */}
                             <div className="relative w-full h-52 bg-gray-100">
                                 {service.image ? (
-                                    <Image src={service.image} alt={service.name} fill className="object-cover" />
+                                    <Image src={service.image} alt={service.name} sizes="400px" fill className="object-cover" />
                                 ) : (
                                     <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-gray-50 text-gray-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

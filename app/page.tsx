@@ -22,7 +22,7 @@ export default function Home() {
             src="/hero-3.png"
             alt="background-image"
             fill
-            className="object-cover"
+            className="object-cover bg-black"
             priority
           />
 
